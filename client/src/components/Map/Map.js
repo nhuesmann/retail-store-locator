@@ -1,6 +1,12 @@
+/* eslint react/require-default-props: "off" */
+/* eslint react/forbid-prop-types: "off" */
+/* eslint no-underscore-dangle: "off" */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import GoogleMap from 'google-map-react';
+
+import Marker from '../Marker/Marker';
 
 import styles from './Map.scss';
 
@@ -11,7 +17,13 @@ const Map = props => (
       defaultCenter={props.center}
       defaultZoom={props.zoom}
     >
-      {props.children}
+      {props.markers.map(marker => (
+        <Marker
+          key={marker._id}
+          lng={marker.location.coordinates[0]}
+          lat={marker.location.coordinates[1]}
+        />
+      ))}
     </GoogleMap>
   </div>
 );
@@ -22,16 +34,7 @@ Map.propTypes = {
     lng: PropTypes.number,
   }),
   zoom: PropTypes.number,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
-};
-
-Map.defaultProps = {
-  center: { lat: 34.1562727, lng: -118.3959542 },
-  zoom: 11,
-  children: null,
+  markers: PropTypes.array,
 };
 
 export default Map;
