@@ -1,0 +1,12 @@
+@import '../../scss/abstracts/_variables.scss';
+
+.container {
+  position: relative;
+  top: -20;
+  left: -30;
+  color: $chefdOrange;
+}
+
+.marker {
+  font-size: 3rem;
+}
