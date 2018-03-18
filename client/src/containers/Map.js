@@ -5,7 +5,8 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 
 import RetailerList from '../components/RetailerList/RetailerList';
-import Map from '../components/Map/Map';
+import RetailerMap from '../components/Map/Map';
+import MaxDistance from '../components/MaxDistance/MaxDistance';
 
 const calculateCenter = locations => {
   const total = locations.length;
@@ -45,26 +46,43 @@ const calculateCenter = locations => {
 
 class MapContainer extends Component {
   state = {
-    center: { lat: 34.1562727, lng: -118.3959542 },
-    zoom: 11,
+    center: null,
+    zoom: 10, // 11 is good
     retailers: [],
+    maxDistance: 25,
   };
 
   async componentDidMount() {
-    const response = await axios.get('/retailers');
+    const sourceLat = 34.11903902186396;
+    const sourceLng = -118.58300465970834;
+    const { maxDistance } = this.state;
 
-    const locations = response.data.map(retailer => ({
-      lat: retailer.location.coordinates[1],
-      lng: retailer.location.coordinates[0],
-    }));
+    const query = `?lat=${sourceLat}&lng=${sourceLng}&maxMiles=${maxDistance}`;
+    console.log(query);
 
-    const center = calculateCenter(locations);
+    // const response = await axios.get('/retailers');
+    const response = await axios.get(`/retailers${query}`);
 
-    this.setState({
-      retailers: response.data,
-      center,
-    });
+    if (response.data.length > 0) {
+      const locations = response.data.map(retailer => ({
+        lat: retailer.location.coordinates[1],
+        lng: retailer.location.coordinates[0],
+      }));
+
+      const center = calculateCenter(locations);
+
+      console.log(center);
+
+      this.setState({
+        retailers: response.data,
+        center,
+      });
+    }
   }
+
+  handleMaxDistanceSelect = event => {
+    this.setState({ maxDistance: +event.target.value });
+  };
 
   render() {
     return (
@@ -72,7 +90,12 @@ class MapContainer extends Component {
         {this.state.retailers && (
           <Fragment>
             <RetailerList retailers={this.state.retailers} />
-            <Map
+            <MaxDistance
+              options={[5, 10, 25, 50]}
+              selected={this.state.maxDistance}
+              onChange={this.handleMaxDistanceSelect}
+            />
+            <RetailerMap
               markers={this.state.retailers}
               center={this.state.center}
               zoom={this.state.zoom}
