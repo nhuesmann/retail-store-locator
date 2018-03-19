@@ -14,8 +14,8 @@ const Map = props => (
   <div className={styles.container}>
     <GoogleMap
       bootstrapURLKeys={{ key: [process.env.REACT_APP_GOOGLE_API_KEY] }}
-      defaultCenter={props.center}
-      defaultZoom={props.zoom}
+      zoom={props.zoom}
+      center={props.center}
     >
       {props.markers.map(marker => (
         <Marker

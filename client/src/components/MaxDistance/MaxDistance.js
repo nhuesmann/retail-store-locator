@@ -6,7 +6,7 @@ const MaxDistance = props => (
     <select value={props.selected} onChange={props.onChange}>
       {props.options.map(option => (
         <option key={option} value={option}>
-          {option}
+          {option} miles
         </option>
       ))}
     </select>

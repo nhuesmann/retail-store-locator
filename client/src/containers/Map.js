@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import RetailerList from '../components/RetailerList/RetailerList';
 import RetailerMap from '../components/Map/Map';
-import MaxDistance from '../components/MaxDistance/MaxDistance';
+import SearchForm from '../components/SearchForm/SearchForm';
 
 const calculateCenter = locations => {
   const total = locations.length;
@@ -47,7 +47,7 @@ const calculateCenter = locations => {
 class MapContainer extends Component {
   state = {
     center: null,
-    zoom: 10, // 11 is good
+    zoom: 11, // 11 is good
     retailers: [],
     maxDistance: 25,
   };
@@ -56,9 +56,9 @@ class MapContainer extends Component {
     const sourceLat = 34.11903902186396;
     const sourceLng = -118.58300465970834;
     const { maxDistance } = this.state;
+    // const maxDistance = this.state.maxDistance.split(' ')[0];
 
     const query = `?lat=${sourceLat}&lng=${sourceLng}&maxMiles=${maxDistance}`;
-    console.log(query);
 
     // const response = await axios.get('/retailers');
     const response = await axios.get(`/retailers${query}`);
@@ -70,8 +70,6 @@ class MapContainer extends Component {
       }));
 
       const center = calculateCenter(locations);
-
-      console.log(center);
 
       this.setState({
         retailers: response.data,
@@ -89,12 +87,18 @@ class MapContainer extends Component {
       <Fragment>
         {this.state.retailers && (
           <Fragment>
-            <RetailerList retailers={this.state.retailers} />
+            {/* <SearchBox />
             <MaxDistance
               options={[5, 10, 25, 50]}
               selected={this.state.maxDistance}
               onChange={this.handleMaxDistanceSelect}
+            /> */}
+            <SearchForm
+              options={[5, 10, 25, 50]}
+              selected={this.state.maxDistance}
+              onChange={this.handleMaxDistanceSelect}
             />
+            <RetailerList retailers={this.state.retailers} />
             <RetailerMap
               markers={this.state.retailers}
               center={this.state.center}

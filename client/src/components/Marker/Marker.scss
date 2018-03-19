@@ -1,9 +1,11 @@
 @import '../../scss/abstracts/_variables.scss';
 
 .container {
-  position: relative;
-  top: -20;
-  left: -30;
+  position: absolute;
+  width: 24px;
+  height: 32px;
+  left: -14px;
+  top: -20px;
   color: $chefdOrange;
 }
 
