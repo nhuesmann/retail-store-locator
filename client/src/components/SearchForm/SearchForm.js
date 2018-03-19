@@ -1,10 +1,18 @@
 /* eslint react/no-unused-state: 0 */
 
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
+
+import {
+  // updateMaxDistance,
+  updateOriginAddress,
+  updateOriginCoordinates,
+} from '../../store/actions';
 
 class SimpleForm extends React.Component {
   constructor(props) {
@@ -14,7 +22,6 @@ class SimpleForm extends React.Component {
       placeId: '',
       coordinates: { lat: null, lng: null },
     };
-    this.onChange = address => this.setState({ address });
   }
 
   handleSelect = async (address, placeId) => {
@@ -35,8 +42,8 @@ class SimpleForm extends React.Component {
 
   render() {
     const inputProps = {
-      value: this.state.address,
-      onChange: this.onChange,
+      value: this.props.address,
+      onChange: this.props.onChange,
       placeholder: 'Search...',
       autoFocus: true,
     };
@@ -72,7 +79,7 @@ class SimpleForm extends React.Component {
       <form onSubmit={this.handleFormSubmit}>
         <PlacesAutocomplete
           inputProps={inputProps}
-          onSelect={this.handleSelect}
+          onSelect={this.props.updateOriginCoordinates}
           styles={formStyles}
           highlightFirstSuggestion
         />
@@ -82,4 +89,23 @@ class SimpleForm extends React.Component {
   }
 }
 
-export default SimpleForm;
+SimpleForm.propTypes = {
+  address: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  updateOriginCoordinates: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  address: state.form.searchOrigin.address,
+  placeId: state.form.searchOrigin.placeId,
+  coordinates: state.form.searchOrigin.coordinates,
+  maxDistance: state.form.maxDistance,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onChange: address => dispatch(updateOriginAddress(address)),
+  updateOriginCoordinates: (address, placeId) =>
+    dispatch(updateOriginCoordinates.request(address, placeId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SimpleForm);
