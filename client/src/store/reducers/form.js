@@ -12,11 +12,18 @@ const initialState = {
   maxDistance: 50,
 };
 
-function updateMaxDistance(state, action) {
+function updateOriginCoordinatesSuccess(state, action) {
   return {
     ...state,
-    maxDistance: action.maxDistance,
+    searchOrigin: {
+      ...state.searchOrigin,
+      coordinates: action.coordinates,
+    },
   };
+}
+
+function updateOriginCoordinatesFailure(state) {
+  return state;
 }
 
 function updateOriginAddress(state, action) {
@@ -39,24 +46,20 @@ function updateOriginPlaceId(state, action) {
   };
 }
 
-function updateOriginCoordinatesSuccess(state, action) {
+function updateMaxDistance(state, action) {
   return {
     ...state,
-    searchOrigin: {
-      ...state.searchOrigin,
-      coordinates: action.coordinates,
-    },
+    maxDistance: +action.maxDistance,
   };
-}
-
-function updateOriginCoordinatesFailure(state) {
-  return state;
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.UPDATE_MAX_DISTANCE:
-      return updateMaxDistance(state, action);
+    case ActionTypes.UPDATE_ORIGIN_COORDINATES.SUCCESS:
+      return updateOriginCoordinatesSuccess(state, action);
+
+    case ActionTypes.UPDATE_ORIGIN_COORDINATES.FAILURE:
+      return updateOriginCoordinatesFailure(state);
 
     case ActionTypes.UPDATE_ORIGIN_ADDRESS:
       return updateOriginAddress(state, action);
@@ -64,11 +67,8 @@ const reducer = (state = initialState, action) => {
     case ActionTypes.UPDATE_ORIGIN_PLACE_ID:
       return updateOriginPlaceId(state, action);
 
-    case ActionTypes.UPDATE_ORIGIN_COORDINATES.SUCCESS:
-      return updateOriginCoordinatesSuccess(state, action);
-
-    case ActionTypes.UPDATE_ORIGIN_COORDINATES.FAILURE:
-      return updateOriginCoordinatesFailure(state);
+    case ActionTypes.UPDATE_MAX_DISTANCE:
+      return updateMaxDistance(state, action);
 
     default:
       return state;

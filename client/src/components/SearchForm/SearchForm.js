@@ -8,91 +8,90 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
+import MaxDistanceSelector from '../MaxDistance/MaxDistance';
+
 import {
-  // updateMaxDistance,
-  updateOriginAddress,
   updateOriginCoordinates,
+  updateOriginAddress,
+  updateMaxDistance,
 } from '../../store/actions';
 
-class SimpleForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      address: '',
-      placeId: '',
-      coordinates: { lat: null, lng: null },
-    };
-  }
+const handleFormSubmit = event => {
+  event.preventDefault();
 
-  handleSelect = async (address, placeId) => {
-    const geocodedAddress = await geocodeByAddress(address);
-    const coordinates = await getLatLng(geocodedAddress[0]);
+  geocodeByAddress(this.state.address)
+    .then(results => getLatLng(results[0]))
+    .then(latLng => console.log('Success', latLng))
+    .catch(error => console.error('Error', error));
+};
 
-    this.setState({ address, placeId, coordinates });
+const SearchForm = props => {
+  const inputProps = {
+    value: props.address,
+    onChange: props.updateOriginAddress,
+    placeholder: 'Choose a location...',
+    autoFocus: true,
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
+  // const renderSuggestion = ({ suggestion }) => (
+  //   <div>
+  //     <i className="fa fa-map-marker" />
+  //     {suggestion}
+  //   </div>
+  // );
 
-    geocodeByAddress(this.state.address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
-      .catch(error => console.error('Error', error));
+  // default styles with minor changes
+  const formStyles = {
+    root: { position: 'relative', paddingBottom: '0px' },
+    input: { display: 'inline-block', width: '100%', padding: '10px' },
+    autocompleteContainer: {
+      position: 'relative',
+      top: '100%',
+      backgroundColor: 'white',
+      border: '1px solid rgb(78, 78, 78)',
+      width: '80%',
+    },
+    autocompleteItem: {
+      backgroundColor: '#ffffff',
+      padding: '10px',
+      color: 'rgb(253, 103, 33)',
+      cursor: 'pointer',
+    },
+    autocompleteItemActive: { backgroundColor: 'rgb(247, 247, 247)' },
   };
 
-  render() {
-    const inputProps = {
-      value: this.props.address,
-      onChange: this.props.onChange,
-      placeholder: 'Search...',
-      autoFocus: true,
-    };
-
-    // const renderSuggestion = ({ suggestion }) => (
-    //   <div>
-    //     <i className="fa fa-map-marker" />
-    //     {suggestion}
-    //   </div>
-    // );
-
-    // default styles with minor changes
-    const formStyles = {
-      root: { position: 'relative', paddingBottom: '0px' },
-      input: { display: 'inline-block', width: '100%', padding: '10px' },
-      autocompleteContainer: {
-        position: 'relative',
-        top: '100%',
-        backgroundColor: 'white',
-        border: '1px solid rgb(78, 78, 78)',
-        width: '80%',
-      },
-      autocompleteItem: {
-        backgroundColor: '#ffffff',
-        padding: '10px',
-        color: 'rgb(253, 103, 33)',
-        cursor: 'pointer',
-      },
-      autocompleteItemActive: { backgroundColor: 'rgb(247, 247, 247)' },
-    };
-
-    return (
-      <form onSubmit={this.handleFormSubmit}>
-        <PlacesAutocomplete
-          inputProps={inputProps}
-          onSelect={this.props.updateOriginCoordinates}
-          styles={formStyles}
-          highlightFirstSuggestion
+  return (
+    <form onSubmit={handleFormSubmit}>
+      <PlacesAutocomplete
+        inputProps={inputProps}
+        onSelect={props.updateOriginCoordinates}
+        styles={formStyles}
+        highlightFirstSuggestion
+      />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+        }}
+      >
+        <MaxDistanceSelector
+          options={[5, 10, 25, 50]}
+          selected={props.maxDistance}
+          onChange={props.updateMaxDistance}
         />
-        <button type="submit">Submit</button>
-      </form>
-    );
-  }
-}
+        <button type="submit">Search</button>
+      </div>
+    </form>
+  );
+};
 
-SimpleForm.propTypes = {
+SearchForm.propTypes = {
   address: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  maxDistance: PropTypes.number.isRequired,
   updateOriginCoordinates: PropTypes.func.isRequired,
+  updateOriginAddress: PropTypes.func.isRequired,
+  updateMaxDistance: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -103,9 +102,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onChange: address => dispatch(updateOriginAddress(address)),
   updateOriginCoordinates: (address, placeId) =>
     dispatch(updateOriginCoordinates.request(address, placeId)),
+  updateOriginAddress: address => dispatch(updateOriginAddress(address)),
+  updateMaxDistance: event => dispatch(updateMaxDistance(event.target.value)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SimpleForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchForm);
