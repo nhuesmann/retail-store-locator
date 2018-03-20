@@ -15,11 +15,13 @@ import {
   getRetailers,
 } from '../../store/actions';
 
+import styles from './SearchForm.scss';
+
 const SearchForm = props => {
   const inputProps = {
     value: props.address,
     onChange: props.updateOriginAddress,
-    placeholder: 'Choose a location...',
+    placeholder: 'Enter Zip, City or State',
     autoFocus: true,
   };
 
@@ -29,33 +31,34 @@ const SearchForm = props => {
     props.getRetailers(props.coordinates, props.maxDistance);
   };
 
-  // const renderSuggestion = ({ suggestion }) => (
-  //   <div>
-  //     <i className="fa fa-map-marker" />
-  //     {suggestion}
-  //   </div>
-  // );
-
-  // default styles with minor changes
   const formStyles = {
-    root: { position: 'relative', paddingBottom: '0px' },
+    root: {
+      paddingBottom: '0px',
+      marginTop: '5px',
+      marginRight: '10px',
+      flex: '4',
+      color: 'rgb(78, 78, 78)',
+    },
     input: {
-      display: 'inline-block',
       width: '100%',
-      padding: '10px',
+      padding: '10px 10px 7px 10px',
       outline: 'none',
+      fontSize: '14px',
+      fontFamily: 'Verlag-Light',
     },
     autocompleteContainer: {
       position: 'relative',
-      top: '100%',
+      top: '0',
       backgroundColor: 'white',
-      border: '1px solid rgb(78, 78, 78)',
+      border: 'none',
       width: '100%',
     },
     autocompleteItem: {
       backgroundColor: '#ffffff',
-      padding: '10px', // color: 'rgb(253, 103, 33)',
+      padding: '10px',
       cursor: 'pointer',
+      textAlign: 'left',
+      paddingLeft: '20px',
     },
     autocompleteItemActive: {
       backgroundColor: 'rgb(253, 103, 33)',
@@ -64,28 +67,26 @@ const SearchForm = props => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <PlacesAutocomplete
-        inputProps={inputProps}
-        onSelect={props.updateOriginCoordinates}
-        styles={formStyles}
-        highlightFirstSuggestion
-      />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-        }}
-      >
-        <MaxDistanceSelector
-          options={[5, 10, 25, 50]}
-          selected={props.maxDistance}
-          onChange={props.updateMaxDistance}
+    <div className={styles.container}>
+      <form onSubmit={handleFormSubmit} className={styles.form}>
+        <PlacesAutocomplete
+          inputProps={inputProps}
+          onSelect={props.updateOriginCoordinates}
+          styles={formStyles}
+          highlightFirstSuggestion
         />
-        <button type="submit">Search</button>
-      </div>
-    </form>
+        <div className={styles.distanceAndButton}>
+          <MaxDistanceSelector
+            options={[5, 10, 25, 50]}
+            selected={props.maxDistance}
+            onChange={props.updateMaxDistance}
+          />
+          <button type="submit" className={styles.button}>
+            Search
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 

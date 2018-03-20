@@ -7,8 +7,10 @@ import PropTypes from 'prop-types';
 
 import RetailerResult from '../RetailerResult/RetailerResult';
 
+import styles from './RetailerResultList.scss';
+
 const RetailerList = props => (
-  <div>
+  <div className={styles.container}>
     <ul>
       {props.retailers &&
         props.retailers.map((retailer, index) => (

@@ -1,0 +1,23 @@
+@import '../../scss/abstracts/_variables.scss';
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+}
+
+.distanceAndButton {
+  flex: 1;
+}
+
+.button {
+  font-family: 'Verlag-Book';
+  font-size: 1.3rem;
+  color: $charcoal;
+  text-transform: uppercase;
+  cursor: pointer;
+}

@@ -11,6 +11,8 @@ import RetailerResultList from '../components/RetailerResultList/RetailerResultL
 import RetailerMap from '../components/Map/Map';
 import SearchForm from '../components/SearchForm/SearchForm';
 
+// TODO: DELETE ME - no longer used. Need to rework container vs component structure
+
 class RetailStoreLocator extends Component {
   state = {
     // retailers: [],

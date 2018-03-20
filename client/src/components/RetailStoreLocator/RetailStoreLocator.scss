@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  margin: 10rem auto;
+  max-width: 120rem;
+}
+
+.searchContainer {
+  flex: 2;
+  margin: 0 1.4rem;
+}
+
+.mapContainer {
+  flex: 3;
+}
