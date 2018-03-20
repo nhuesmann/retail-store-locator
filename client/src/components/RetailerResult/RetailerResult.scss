@@ -1,10 +1,18 @@
+@import '../../scss/abstracts/_variables.scss';
+
 .container {
   width: 100%;
-  border: 1px solid gray;
-  padding: 0.5rem;
+  border-bottom: 1px solid $mediumGray;
+  padding: 2rem 1.5rem;
+  text-align: left;
+  color: $charcoal;
 }
 
 .selected {
   color: white;
-  background-color: rgb(253, 103, 33);
+  background-color: $chefdOrange;
+}
+
+.heading {
+  font-family: 'Verlag-Bold';
 }

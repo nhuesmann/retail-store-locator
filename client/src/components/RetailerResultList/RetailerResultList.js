@@ -13,11 +13,12 @@ const RetailerList = props => (
   <div className={styles.container}>
     <ul>
       {props.retailers &&
-        props.retailers.map((retailer, index) => (
+        props.retailers.map(retailer => (
           <li key={retailer._id}>
-            <RetailerResult selected={retailer._id === props.hoveredMarker}>
-              {index + 1}. {retailer.name} - {retailer.address1}
-            </RetailerResult>
+            <RetailerResult
+              retailer={retailer}
+              selected={retailer._id === props.hoveredMarker}
+            />
           </li>
         ))}
     </ul>
