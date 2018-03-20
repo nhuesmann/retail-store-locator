@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const MaxDistance = props => (
+const MaxDistanceSelector = props => (
   <div>
     <select value={props.selected} onChange={props.onChange}>
       {props.options.map(option => (
@@ -13,14 +13,14 @@ const MaxDistance = props => (
   </div>
 );
 
-MaxDistance.propTypes = {
+MaxDistanceSelector.propTypes = {
   options: PropTypes.arrayOf(PropTypes.number).isRequired,
   selected: PropTypes.number,
   onChange: PropTypes.func.isRequired,
 };
 
-MaxDistance.defaultProps = {
+MaxDistanceSelector.defaultProps = {
   selected: 50,
 };
 
-export default MaxDistance;
+export default MaxDistanceSelector;

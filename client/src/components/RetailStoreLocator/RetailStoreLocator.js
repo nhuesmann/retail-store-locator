@@ -6,7 +6,7 @@ import RetailerList from '../RetailerList/RetailerList';
 import RetailerMap from '../Map/Map';
 import SearchForm from '../SearchForm/SearchForm';
 
-const RetailStoreLocatorPage = props => (
+const RetailStoreLocator = props => (
   <div>
     <div>
       <SearchForm
@@ -26,4 +26,4 @@ const RetailStoreLocatorPage = props => (
   </div>
 );
 
-export default RetailStoreLocatorPage;
+export default RetailStoreLocator;

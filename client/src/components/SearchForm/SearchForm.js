@@ -1,29 +1,19 @@
 /* eslint react/no-unused-state: 0 */
+/* eslint react/forbid-prop-types: "off" */
 
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from 'react-places-autocomplete';
+import PlacesAutocomplete from 'react-places-autocomplete';
 
-import MaxDistanceSelector from '../MaxDistance/MaxDistance';
+import MaxDistanceSelector from '../MaxDistanceSelector/MaxDistanceSelector';
 
 import {
   updateOriginCoordinates,
   updateOriginAddress,
   updateMaxDistance,
+  getRetailers,
 } from '../../store/actions';
-
-const handleFormSubmit = event => {
-  event.preventDefault();
-
-  geocodeByAddress(this.state.address)
-    .then(results => getLatLng(results[0]))
-    .then(latLng => console.log('Success', latLng))
-    .catch(error => console.error('Error', error));
-};
 
 const SearchForm = props => {
   const inputProps = {
@@ -31,6 +21,12 @@ const SearchForm = props => {
     onChange: props.updateOriginAddress,
     placeholder: 'Choose a location...',
     autoFocus: true,
+  };
+
+  const handleFormSubmit = event => {
+    event.preventDefault();
+
+    props.getRetailers(props.coordinates, props.maxDistance);
   };
 
   // const renderSuggestion = ({ suggestion }) => (
@@ -88,10 +84,12 @@ const SearchForm = props => {
 
 SearchForm.propTypes = {
   address: PropTypes.string.isRequired,
+  coordinates: PropTypes.object.isRequired,
   maxDistance: PropTypes.number.isRequired,
   updateOriginCoordinates: PropTypes.func.isRequired,
   updateOriginAddress: PropTypes.func.isRequired,
   updateMaxDistance: PropTypes.func.isRequired,
+  getRetailers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -106,6 +104,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(updateOriginCoordinates.request(address, placeId)),
   updateOriginAddress: address => dispatch(updateOriginAddress(address)),
   updateMaxDistance: event => dispatch(updateMaxDistance(event.target.value)),
+  getRetailers: (origin, maxDistance) =>
+    dispatch(getRetailers.request(origin, maxDistance)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchForm);

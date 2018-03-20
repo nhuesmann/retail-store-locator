@@ -10,10 +10,82 @@ const {
   updateOriginAddress,
   updateOriginPlaceId,
   updateOriginCoordinates,
+  updateMapCenter,
 } = actions;
 
-const fetchEntityById = (resource, id) => axios.get(`${resource}/${id}.json`);
-// const fetchEntityCollection = resource => axios.get(`${resource}.json`);
+const calculateCenter = locations => {
+  const total = locations.length;
+
+  if (total === 1) {
+    return locations[0];
+  }
+
+  let x = 0;
+  let y = 0;
+  let z = 0;
+
+  locations.forEach(location => {
+    const latitude = location.lat * Math.PI / 180;
+    const longitude = location.lng * Math.PI / 180;
+
+    x += Math.cos(latitude) * Math.cos(longitude);
+    y += Math.cos(latitude) * Math.sin(longitude);
+    z += Math.sin(latitude);
+  });
+
+  x /= total;
+  y /= total;
+  z /= total;
+
+  const centralLongitude = Math.atan2(y, x);
+  const centralSquareRoot = Math.sqrt(x * x + y * y);
+  const centralLatitude = Math.atan2(z, centralSquareRoot);
+
+  const center = {
+    lat: centralLatitude * 180 / Math.PI,
+    lng: centralLongitude * 180 / Math.PI,
+  };
+
+  return center;
+};
+
+const fetchEntityCollection = (resource, query) => {
+  const queryString = query ? `/${query}` : '';
+  return axios.get(`${resource}${queryString}`);
+};
+
+function* getRetailersSaga({ origin, maxDistance }) {
+  try {
+    const { lat, lng } = origin;
+    const query = `?lat=${lat}&lng=${lng}&maxMiles=${maxDistance}`;
+
+    const response = yield call(fetchEntityCollection, 'retailers', query);
+
+    if (response.data.length > 0) {
+      const locations = response.data.map(retailer => ({
+        lat: retailer.location.coordinates[1],
+        lng: retailer.location.coordinates[0],
+      }));
+
+      const center =
+        locations.length > 1 ? calculateCenter(locations) : locations[0];
+
+      yield put(updateMapCenter(center));
+      yield put(getRetailers.success(response.data));
+    } else {
+      console.log('no retailers found');
+      // set center to the origin address
+      yield put(updateMapCenter(origin));
+      yield put(getRetailers.success([]));
+    }
+  } catch (error) {
+    yield put(getRetailers.failure(error));
+  }
+}
+
+function* watchGetRetailersSaga() {
+  yield takeEvery(actions.GET_RETAILERS.REQUEST, getRetailersSaga);
+}
 
 function* updateOriginCoordinatesSaga({ address, placeId }) {
   try {
@@ -33,20 +105,6 @@ function* watchUpdateOriginCoordinatesSaga() {
     actions.UPDATE_ORIGIN_COORDINATES.REQUEST,
     updateOriginCoordinatesSaga
   );
-}
-
-function* getRetailersSaga({ id }) {
-  try {
-    const response = yield call(fetchEntityById, 'products', id);
-
-    yield put(getRetailers.success(response.data));
-  } catch (error) {
-    yield put(getRetailers.failure(error));
-  }
-}
-
-function* watchGetRetailersSaga() {
-  yield takeEvery(actions.GET_RETAILERS.REQUEST, getRetailersSaga);
 }
 
 export default function* rootSaga() {
