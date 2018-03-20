@@ -39,21 +39,28 @@ const SearchForm = props => {
   // default styles with minor changes
   const formStyles = {
     root: { position: 'relative', paddingBottom: '0px' },
-    input: { display: 'inline-block', width: '100%', padding: '10px' },
+    input: {
+      display: 'inline-block',
+      width: '100%',
+      padding: '10px',
+      outline: 'none',
+    },
     autocompleteContainer: {
       position: 'relative',
       top: '100%',
       backgroundColor: 'white',
       border: '1px solid rgb(78, 78, 78)',
-      width: '80%',
+      width: '100%',
     },
     autocompleteItem: {
       backgroundColor: '#ffffff',
-      padding: '10px',
-      color: 'rgb(253, 103, 33)',
+      padding: '10px', // color: 'rgb(253, 103, 33)',
       cursor: 'pointer',
     },
-    autocompleteItemActive: { backgroundColor: 'rgb(247, 247, 247)' },
+    autocompleteItemActive: {
+      backgroundColor: 'rgb(253, 103, 33)',
+      color: 'white',
+    },
   };
 
   return (

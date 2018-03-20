@@ -12,8 +12,12 @@ export {
 export {
   UPDATE_MAP_CENTER,
   UPDATE_ZOOM,
+  MARKER_HOVERED,
+  MARKER_HOVER_EXITED,
   updateMapCenter,
   updateZoom,
+  markerHovered,
+  markerHoverExited,
 } from './map';
 
 export { GET_RETAILERS, getRetailers } from './retailers';

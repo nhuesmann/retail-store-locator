@@ -1,5 +1,6 @@
 /* eslint react/require-default-props: "off" */
 /* eslint react/forbid-prop-types: "off" */
+/* eslint react/no-unused-prop-types: "off" */
 /* eslint no-underscore-dangle: "off" */
 
 import React from 'react';
@@ -9,6 +10,8 @@ import GoogleMap from 'google-map-react';
 
 import Marker from '../Marker/Marker';
 
+import { markerHovered, markerHoverExited } from '../../store/actions';
+
 import styles from './Map.scss';
 
 const Map = props => (
@@ -17,6 +20,7 @@ const Map = props => (
       bootstrapURLKeys={{ key: [process.env.REACT_APP_GOOGLE_API_KEY] }}
       zoom={props.zoom}
       center={props.center}
+      hoverDistance={18}
     >
       {props.retailers &&
         props.retailers.map(retailer => (
@@ -24,6 +28,8 @@ const Map = props => (
             key={retailer._id}
             lng={retailer.location.coordinates[0]}
             lat={retailer.location.coordinates[1]}
+            onMouseEnter={() => props.markerHovered(retailer._id)}
+            onMouseLeave={props.markerHoverExited}
           />
         ))}
     </GoogleMap>
@@ -37,6 +43,8 @@ Map.propTypes = {
   }),
   zoom: PropTypes.number,
   retailers: PropTypes.array,
+  markerHovered: PropTypes.func,
+  markerHoverExited: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -45,4 +53,9 @@ const mapStateToProps = state => ({
   retailers: state.retailers,
 });
 
-export default connect(mapStateToProps)(Map);
+const mapDispatchToProps = dispatch => ({
+  markerHovered: markerId => dispatch(markerHovered(markerId)),
+  markerHoverExited: () => dispatch(markerHoverExited()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map);

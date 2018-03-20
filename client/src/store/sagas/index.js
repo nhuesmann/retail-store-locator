@@ -11,6 +11,7 @@ const {
   updateOriginPlaceId,
   updateOriginCoordinates,
   updateMapCenter,
+  updateZoom,
 } = actions;
 
 const calculateCenter = locations => {
@@ -70,11 +71,14 @@ function* getRetailersSaga({ origin, maxDistance }) {
       const center =
         locations.length > 1 ? calculateCenter(locations) : locations[0];
 
+      const zoom = locations.length === 1 ? 14 : 11;
+
+      yield put(updateZoom(zoom));
       yield put(updateMapCenter(center));
       yield put(getRetailers.success(response.data));
     } else {
       console.log('no retailers found');
-      // set center to the origin address
+      // TODO: need to display in UI
       yield put(updateMapCenter(origin));
       yield put(getRetailers.success([]));
     }
