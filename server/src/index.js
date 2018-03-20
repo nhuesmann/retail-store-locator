@@ -1,10 +1,11 @@
 require('./config/config');
 
 const express = require('express');
-const routes = require('./routes');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+
+const routes = require('./routes');
 
 const app = express();
 const port = parseInt(process.env.PORT, 10) || 5000;
@@ -37,7 +38,18 @@ app.get('/test', (req, res) => {
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(err.status || 500).send({ error: err.message });
+  res.status(err.status || 500);
+
+  const data = {
+    message: err.message,
+    error: err,
+  };
+
+  if (req.xhr) {
+    res.json(data);
+  } else {
+    res.render('error', data);
+  }
 });
 
 app.listen(port, () => `Server running on port ${port}`);

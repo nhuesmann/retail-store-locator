@@ -1,4 +1,5 @@
 /* eslint react/require-default-props: 0 */
+/* eslint react/forbid-prop-types: 0 */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -24,7 +25,7 @@ const RetailerResult = ({ retailer, selected }) => {
 };
 
 RetailerResult.propTypes = {
-  retailer: PropTypes.string.isRequired,
+  retailer: PropTypes.object.isRequired,
   selected: PropTypes.bool.isRequired,
 };
 
