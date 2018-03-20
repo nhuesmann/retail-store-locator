@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import RetailerList from '../components/RetailerList/RetailerList';
+import RetailerResultList from '../components/RetailerResultList/RetailerResultList';
 import RetailerMap from '../components/Map/Map';
 import SearchForm from '../components/SearchForm/SearchForm';
 
@@ -26,7 +26,7 @@ class RetailStoreLocator extends Component {
       <Fragment>
         <SearchForm />
         {this.props.retailers && (
-          <RetailerList retailers={this.props.retailers} />
+          <RetailerResultList retailers={this.props.retailers} />
         )}
         <RetailerMap />
       </Fragment>

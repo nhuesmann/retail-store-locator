@@ -68,8 +68,7 @@ function* getRetailersSaga({ origin, maxDistance }) {
         lng: retailer.location.coordinates[0],
       }));
 
-      const center =
-        locations.length > 1 ? calculateCenter(locations) : locations[0];
+      const center = calculateCenter(locations);
 
       const zoom = locations.length === 1 ? 14 : 11;
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import RetailerList from '../RetailerList/RetailerList';
+import RetailerResultList from '../RetailerResultList/RetailerResultList';
 import RetailerMap from '../Map/Map';
 import SearchForm from '../SearchForm/SearchForm';
 
@@ -14,7 +14,7 @@ const RetailStoreLocator = props => (
         selected={props.maxDistance}
         onChange={this.handleMaxDistanceSelect}
       />
-      <RetailerList retailers={props.retailers} />
+      <RetailerResultList retailers={props.retailers} />
     </div>
     <div>
       <RetailerMap
