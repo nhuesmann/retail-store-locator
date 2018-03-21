@@ -10,7 +10,11 @@ import GoogleMap from 'google-map-react';
 
 import Marker from '../Marker/Marker';
 
-import { markerHovered, markerHoverExited } from '../../store/actions';
+import {
+  markerHovered,
+  markerHoverExited,
+  updateCenterAndZoom,
+} from '../../store/actions';
 
 import styles from './Map.scss';
 
@@ -21,6 +25,13 @@ const Map = props => (
       zoom={props.zoom}
       center={props.center}
       hoverDistance={18}
+      margin={[30, 30, 30, 30]}
+      onBoundsChange={(center, zoom, bounds, marginBounds) => {
+        console.log('center', center);
+        console.log('zoom', zoom);
+        console.log('bounds', bounds);
+        console.log('marginBounds', marginBounds);
+      }}
     >
       {props.retailers &&
         props.retailers.map(retailer => (
@@ -45,6 +56,7 @@ Map.propTypes = {
   retailers: PropTypes.array,
   markerHovered: PropTypes.func,
   markerHoverExited: PropTypes.func,
+  updateCenterAndZoom: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -56,6 +68,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   markerHovered: markerId => dispatch(markerHovered(markerId)),
   markerHoverExited: () => dispatch(markerHoverExited()),
+  updateCenterAndZoom: (center, zoom) =>
+    dispatch(updateCenterAndZoom(center, zoom)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

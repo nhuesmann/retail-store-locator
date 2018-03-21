@@ -9,16 +9,24 @@ const initialState = {
   hoveredMarker: null,
 };
 
-function updateMapCenter(state, action) {
+// function updateMapCenter(state, action) {
+//   return {
+//     ...state,
+//     center: action.center,
+//   };
+// }
+
+// function updateZoom(state, action) {
+//   return {
+//     ...state,
+//     zoom: action.zoom,
+//   };
+// }
+
+function updateCenterAndZoom(state, action) {
   return {
     ...state,
     center: action.center,
-  };
-}
-
-function updateZoom(state, action) {
-  return {
-    ...state,
     zoom: action.zoom,
   };
 }
@@ -39,11 +47,14 @@ function markerHoverExited(state) {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.UPDATE_MAP_CENTER:
-      return updateMapCenter(state, action);
+    // case ActionTypes.UPDATE_MAP_CENTER:
+    //   return updateMapCenter(state, action);
 
-    case ActionTypes.UPDATE_ZOOM:
-      return updateZoom(state, action);
+    // case ActionTypes.UPDATE_ZOOM:
+    //   return updateZoom(state, action);
+
+    case ActionTypes.UPDATE_CENTER_AND_ZOOM:
+      return updateCenterAndZoom(state, action);
 
     case ActionTypes.MARKER_HOVERED:
       return markerHovered(state, action);

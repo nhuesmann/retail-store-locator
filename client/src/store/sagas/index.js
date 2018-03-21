@@ -1,5 +1,8 @@
 import { takeEvery, put, call, all } from 'redux-saga/effects';
 import axios from 'axios';
+import bbox from '@turf/bbox';
+import center from '@turf/center';
+import { lineString, featureCollection, point } from '@turf/helpers';
 
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
@@ -10,44 +13,36 @@ const {
   updateOriginAddress,
   updateOriginPlaceId,
   updateOriginCoordinates,
-  updateMapCenter,
-  updateZoom,
+  // updateMapCenter,
+  // updateZoom,
+  updateCenterAndZoom,
 } = actions;
 
-const calculateCenter = locations => {
-  const total = locations.length;
-
-  if (total === 1) {
-    return locations[0];
+const calculateCenter = coordinates => {
+  // If only one coordinate, return it as the center
+  if (coordinates.length === 1) {
+    return {
+      lat: coordinates[0][0],
+      lng: coordinates[0][1],
+    };
   }
 
-  let x = 0;
-  let y = 0;
-  let z = 0;
-
-  locations.forEach(location => {
-    const latitude = location.lat * Math.PI / 180;
-    const longitude = location.lng * Math.PI / 180;
-
-    x += Math.cos(latitude) * Math.cos(longitude);
-    y += Math.cos(latitude) * Math.sin(longitude);
-    z += Math.sin(latitude);
-  });
-
-  x /= total;
-  y /= total;
-  z /= total;
-
-  const centralLongitude = Math.atan2(y, x);
-  const centralSquareRoot = Math.sqrt(x * x + y * y);
-  const centralLatitude = Math.atan2(z, centralSquareRoot);
-
-  const center = {
-    lat: centralLatitude * 180 / Math.PI,
-    lng: centralLongitude * 180 / Math.PI,
+  // Here is how this part is done: http://turfjs.org/docs/#bbox
+  const line = lineString(coordinates);
+  const boundingBox = bbox(line);
+  const bounds = {
+    sw: [boundingBox[0], boundingBox[1]],
+    ne: [boundingBox[2], boundingBox[3]],
   };
 
-  return center;
+  // And this part: http://turfjs.org/docs/#center
+  const features = featureCollection([point(bounds.sw), point(bounds.ne)]);
+  const boxCenter = center(features);
+
+  return {
+    lat: boxCenter.geometry.coordinates[0],
+    lng: boxCenter.geometry.coordinates[1],
+  };
 };
 
 const fetchEntityCollection = (resource, query) => {
@@ -63,22 +58,24 @@ function* getRetailersSaga({ origin, maxDistance }) {
     const response = yield call(fetchEntityCollection, 'retailers', query);
 
     if (response.data.length > 0) {
-      const locations = response.data.map(retailer => ({
-        lat: retailer.location.coordinates[1],
-        lng: retailer.location.coordinates[0],
-      }));
+      const locations = response.data.map(retailer =>
+        retailer.location.coordinates.slice().reverse()
+      ); // eslint-disable-line function-paren-newline
 
-      const center = calculateCenter(locations);
+      const calculatedCenter = calculateCenter(locations);
 
+      // TODO: how to calculate this? helper function in gmap lib
       const zoom = locations.length === 1 ? 14 : 11;
 
-      yield put(updateZoom(zoom));
-      yield put(updateMapCenter(center));
+      // yield put(updateZoom(zoom));
+      // yield put(updateMapCenter(calculatedCenter));
+      yield put(updateCenterAndZoom(calculatedCenter, zoom));
       yield put(getRetailers.success(response.data));
     } else {
       console.log('no retailers found');
       // TODO: need to display in UI
-      yield put(updateMapCenter(origin));
+      // yield put(updateMapCenter(origin));
+      yield put(updateCenterAndZoom(origin, 11));
       yield put(getRetailers.success([]));
     }
   } catch (error) {
