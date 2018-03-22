@@ -10,16 +10,14 @@ export {
 } from './form';
 
 export {
-  // UPDATE_MAP_CENTER,
-  // UPDATE_ZOOM,
   UPDATE_CENTER_AND_ZOOM,
   HANDLE_BOUNDS_CHANGE,
+  UPDATE_MAP_FROM_RETAILERS,
   MARKER_HOVERED,
   MARKER_HOVER_EXITED,
-  // updateMapCenter,
-  // updateZoom,
   updateCenterAndZoom,
   handleBoundsChange,
+  updateMapFromRetailers,
   markerHovered,
   markerHoverExited,
 } from './map';

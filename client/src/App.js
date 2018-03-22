@@ -1,6 +1,6 @@
 import React from 'react';
 
-import RetailerStoreLocator from './components/RetailStoreLocator/RetailStoreLocator';
+import RetailerStoreLocator from './containers/RetailStoreLocator';
 
 import styles from './App.scss';
 

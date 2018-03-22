@@ -1,5 +1,6 @@
 /* eslint react/no-did-mount-set-state: "off" */
 /* eslint react/forbid-prop-types: "off" */
+/* eslint react/prefer-stateless-function: "off" */
 /* eslint no-unused-vars: "off" */
 
 import React, { Component, Fragment } from 'react';
@@ -8,21 +9,12 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import RetailerResultList from '../components/RetailerResultList/RetailerResultList';
-import RetailerMap from '../components/Map/Map';
+import MapContainer from './Map';
 import SearchForm from '../components/SearchForm/SearchForm';
 
-// TODO: DELETE ME - no longer used. Need to rework container vs component structure
+// TODO: Need to rework container vs component structure
 
 class RetailStoreLocator extends Component {
-  state = {
-    // retailers: [],
-    // maxDistance: 25,
-  };
-
-  // handleMaxDistanceSelect = event => {
-  //   this.setState({ maxDistance: +event.target.value });
-  // };
-
   render() {
     return (
       <Fragment>
@@ -30,7 +22,7 @@ class RetailStoreLocator extends Component {
         {this.props.retailers && (
           <RetailerResultList retailers={this.props.retailers} />
         )}
-        <RetailerMap />
+        <MapContainer />
       </Fragment>
     );
   }
