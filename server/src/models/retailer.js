@@ -2,16 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const capitalize = string => {
-  if (!string) return string;
-
-  return string
-    .replace('.', '')
-    .toLowerCase()
-    .split(' ')
-    .map(word => word.replace(word[0], word[0].toUpperCase()))
-    .join(' ');
-};
+const { capitalize } = require('../helpers/utility');
 
 const RetailerSchema = new Schema({
   location: {

@@ -45,11 +45,7 @@ app.use((err, req, res, next) => {
     error: err,
   };
 
-  if (req.xhr) {
-    res.json(data);
-  } else {
-    res.render('error', data);
-  }
+  res.json(data);
 });
 
 app.listen(port, () => `Server running on port ${port}`);
