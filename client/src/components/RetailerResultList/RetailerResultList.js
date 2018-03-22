@@ -2,14 +2,13 @@
 /* eslint react/forbid-prop-types: "off" */
 
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import RetailerResult from '../RetailerResult/RetailerResult';
 
 import styles from './RetailerResultList.scss';
 
-const RetailerList = props => (
+const RetailerResultList = props => (
   <div className={styles.container}>
     <ul>
       {props.retailers &&
@@ -25,18 +24,13 @@ const RetailerList = props => (
   </div>
 );
 
-RetailerList.propTypes = {
+RetailerResultList.propTypes = {
   retailers: PropTypes.array.isRequired,
   hoveredMarker: PropTypes.string,
 };
 
-RetailerList.defaultProps = {
+RetailerResultList.defaultProps = {
   hoveredMarker: null,
 };
 
-const mapStateToProps = state => ({
-  retailers: state.retailers,
-  hoveredMarker: state.map.hoveredMarker,
-});
-
-export default connect(mapStateToProps)(RetailerList);
+export default RetailerResultList;

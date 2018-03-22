@@ -27,18 +27,22 @@ const initialState = {
   size: null,
 };
 
+function truncateCenter({ lat, lng }) {
+  return {
+    lat: +lat.toFixed(7),
+    lng: +lng.toFixed(7),
+  };
+}
+
 function handleBoundsChange(state, action) {
-  const { center, zoom, bounds, marginBounds, size } = action;
+  const { zoom, bounds, marginBounds, size } = action;
+  const center = truncateCenter(action.center);
 
   return { ...state, center, zoom, bounds, marginBounds, size };
 }
 
 function updateCenterAndZoom(state, action) {
-  return {
-    ...state,
-    center: action.center,
-    zoom: action.zoom,
-  };
+  return { ...state, center: truncateCenter(action.center), zoom: action.zoom };
 }
 
 function updateMapFromRetailers(state, action) {
@@ -51,7 +55,10 @@ function updateMapFromRetailers(state, action) {
   if (locations.length === 1) {
     return {
       ...state,
-      center: { lat: locations[0][0], lng: locations[0][1] },
+      center: {
+        lat: +locations[0][0].toFixed(7),
+        lng: +locations[0][1].toFixed(7),
+      },
       zoom: 14,
     };
   }
@@ -67,12 +74,9 @@ function updateMapFromRetailers(state, action) {
   };
 
   const { center, zoom } = fitBounds({ nw: bounds.nw, se: bounds.se }, size);
+  const truncatedCenter = truncateCenter(center);
 
-  return {
-    ...state,
-    center,
-    zoom,
-  };
+  return { ...state, center: truncatedCenter, zoom };
 }
 
 function markerHovered(state, action) {

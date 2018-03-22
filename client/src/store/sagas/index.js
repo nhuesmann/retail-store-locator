@@ -11,7 +11,6 @@ const {
   updateOriginAddress,
   updateOriginPlaceId,
   updateOriginCoordinates,
-  updateCenterAndZoom,
 } = actions;
 
 const fetchEntityCollection = (resource, query) => {
@@ -32,7 +31,6 @@ function* getRetailersSaga({ origin, maxDistance }) {
       // TODO: need to display in UI
       console.log('no retailers found');
 
-      yield put(updateCenterAndZoom(origin, 11));
       yield put(getRetailers.success([]));
     }
   } catch (error) {

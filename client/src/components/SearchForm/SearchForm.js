@@ -2,18 +2,10 @@
 /* eslint react/forbid-prop-types: "off" */
 
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'react-places-autocomplete';
 
 import MaxDistanceSelector from '../MaxDistanceSelector/MaxDistanceSelector';
-
-import {
-  updateOriginCoordinates,
-  updateOriginAddress,
-  updateMaxDistance,
-  getRetailers,
-} from '../../store/actions';
 
 import styles from './SearchForm.scss';
 
@@ -100,20 +92,4 @@ SearchForm.propTypes = {
   getRetailers: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  address: state.form.searchOrigin.address,
-  placeId: state.form.searchOrigin.placeId,
-  coordinates: state.form.searchOrigin.coordinates,
-  maxDistance: state.form.maxDistance,
-});
-
-const mapDispatchToProps = dispatch => ({
-  updateOriginCoordinates: (address, placeId) =>
-    dispatch(updateOriginCoordinates.request(address, placeId)),
-  updateOriginAddress: address => dispatch(updateOriginAddress(address)),
-  updateMaxDistance: event => dispatch(updateMaxDistance(event.target.value)),
-  getRetailers: (origin, maxDistance) =>
-    dispatch(getRetailers.request(origin, maxDistance)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchForm);
+export default SearchForm;

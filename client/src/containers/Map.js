@@ -10,22 +10,38 @@ import PropTypes from 'prop-types';
 
 import MapComponent from '../components/Map/Map';
 
-import { handleBoundsChange, updateMapFromRetailers } from '../store/actions';
+import {
+  handleBoundsChange,
+  updateMapFromRetailers,
+  updateCenterAndZoom,
+  markerHovered,
+  markerHoverExited,
+} from '../store/actions';
 
 class MapContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.retailers !== this.props.retailers) {
-      this.props.updateMapFromRetailers(nextProps.retailers, this.props.size);
+      if (nextProps.retailers.length === 0) {
+        // TODO: add function here that will take the map size, search origin,
+        // and search miles and calculate a bounding box X mile radius around origin,
+        // then set center and zoom based on those bounds (similar to updateMapFromRetailers)
+        this.props.updateCenterAndZoom(this.props.searchOrigin, 11);
+      } else {
+        this.props.updateMapFromRetailers(nextProps.retailers, this.props.size);
+      }
     }
   }
 
   render() {
     return (
       <MapComponent
-        markers={this.props.retailers}
         zoom={this.props.zoom}
         center={this.props.center}
-        onChange={this.props.handleBoundsChange}
+        markers={this.props.retailers}
+        hoveredMarker={this.props.hoveredMarker}
+        onBoundsChange={this.props.handleBoundsChange}
+        onMarkerHover={this.props.markerHovered}
+        onMarkerHoverExit={this.props.markerHoverExited}
       />
     );
   }
@@ -51,8 +67,16 @@ MapContainer.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
   }),
+  hoveredMarker: PropTypes.string,
+  searchOrigin: PropTypes.shape({
+    lat: PropTypes.number,
+    lng: PropTypes.number,
+  }),
   handleBoundsChange: PropTypes.func,
   updateMapFromRetailers: PropTypes.func,
+  updateCenterAndZoom: PropTypes.func,
+  markerHovered: PropTypes.func,
+  markerHoverExited: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -62,6 +86,8 @@ const mapStateToProps = state => ({
   bounds: state.map.bounds,
   marginBounds: state.map.marginBounds,
   size: state.map.size,
+  hoveredMarker: state.map.hoveredMarker,
+  searchOrigin: state.form.searchOrigin.coordinates,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -69,6 +95,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(handleBoundsChange(center, zoom, bounds, marginBounds, size)),
   updateMapFromRetailers: (retailers, size) =>
     dispatch(updateMapFromRetailers(retailers, size)),
+  updateCenterAndZoom: (center, zoom) =>
+    dispatch(updateCenterAndZoom(center, zoom)),
+  markerHovered: markerId => dispatch(markerHovered(markerId)),
+  markerHoverExited: () => dispatch(markerHoverExited()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);

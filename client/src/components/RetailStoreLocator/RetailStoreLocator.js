@@ -1,33 +1,23 @@
 /* eslint react/forbid-prop-types: "off" */
 
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
-import RetailerResultList from '../RetailerResultList/RetailerResultList';
-import RetailerMap from '../Map/Map';
-import SearchForm from '../SearchForm/SearchForm';
+import SearchForm from '../../containers/SearchForm';
+import RetailerResultList from '../../containers/RetailerResultList';
+import MapContainer from '../../containers/Map';
 
 import styles from './RetailStoreLocator.scss';
 
-const RetailStoreLocator = props => (
+const RetailStoreLocator = () => (
   <div className={styles.container}>
     <div className={styles.searchContainer}>
       <SearchForm />
-      <RetailerResultList retailers={props.retailers} />
+      <RetailerResultList />
     </div>
     <div className={styles.mapContainer}>
-      <RetailerMap />
+      <MapContainer />
     </div>
   </div>
 );
 
-RetailStoreLocator.propTypes = {
-  retailers: PropTypes.array.isRequired,
-};
-
-const mapStateToProps = state => ({
-  retailers: state.retailers,
-});
-
-export default connect(mapStateToProps)(RetailStoreLocator);
+export default RetailStoreLocator;

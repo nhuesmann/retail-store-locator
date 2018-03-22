@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GoogleMap from 'google-map-react';
 
-import MarkerList from '../../containers/MarkerList';
+import Marker from '../Marker/Marker';
 
 import styles from './Map.scss';
 
@@ -28,9 +28,18 @@ const MapComponent = props => (
       defaultCenter={defaultCenter}
       hoverDistance={18}
       margin={[30, 30, 30, 30]}
-      onChange={props.onChange}
+      onChange={props.onBoundsChange}
     >
-      <MarkerList />
+      {props.markers.length > 0 &&
+        props.markers.map(retailer => (
+          <Marker
+            key={retailer._id}
+            lng={retailer.location.coordinates[0]}
+            lat={retailer.location.coordinates[1]}
+            onMouseEnter={() => props.onMarkerHover(retailer._id)}
+            onMouseLeave={props.onMarkerHoverExit}
+          />
+        ))}
     </GoogleMap>
   </div>
 );
@@ -41,10 +50,10 @@ MapComponent.propTypes = {
     lng: PropTypes.number,
   }),
   zoom: PropTypes.number,
-  retailers: PropTypes.array,
-  markerHovered: PropTypes.func,
-  markerHoverExited: PropTypes.func,
-  onChange: PropTypes.func,
+  markers: PropTypes.array,
+  onBoundsChange: PropTypes.func,
+  onMarkerHover: PropTypes.func,
+  onMarkerHoverExit: PropTypes.func,
 };
 
 export default MapComponent;
