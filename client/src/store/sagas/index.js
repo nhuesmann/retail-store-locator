@@ -1,9 +1,10 @@
+/* eslint function-paren-newline: 0 */
+
 import { takeEvery, put, call, all } from 'redux-saga/effects';
 import axios from 'axios';
 import bbox from '@turf/bbox';
-import center from '@turf/center';
-import { lineString, featureCollection, point } from '@turf/helpers';
-
+import { lineString } from '@turf/helpers';
+import { fitBounds } from 'google-map-react/utils';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
 import * as actions from '../actions';
@@ -18,31 +19,34 @@ const {
   updateCenterAndZoom,
 } = actions;
 
-const calculateCenter = coordinates => {
+const calcCenterAndZoom = coordinates => {
   // If only one coordinate, return it as the center
   if (coordinates.length === 1) {
     return {
-      lat: coordinates[0][0],
-      lng: coordinates[0][1],
+      center: { lat: coordinates[0][0], lng: coordinates[0][1] },
+      zoom: 14,
     };
   }
 
   // Here is how this part is done: http://turfjs.org/docs/#bbox
   const line = lineString(coordinates);
   const boundingBox = bbox(line);
+
   const bounds = {
-    sw: [boundingBox[0], boundingBox[1]],
-    ne: [boundingBox[2], boundingBox[3]],
+    sw: { lat: boundingBox[0], lng: boundingBox[1] },
+    nw: { lat: boundingBox[2], lng: boundingBox[1] },
+    se: { lat: boundingBox[0], lng: boundingBox[3] },
+    ne: { lat: boundingBox[2], lng: boundingBox[3] },
   };
 
-  // And this part: http://turfjs.org/docs/#center
-  const features = featureCollection([point(bounds.sw), point(bounds.ne)]);
-  const boxCenter = center(features);
-
-  return {
-    lat: boxCenter.geometry.coordinates[0],
-    lng: boxCenter.geometry.coordinates[1],
+  const mapSize = {
+    width: 704,
+    height: 800,
   };
+
+  const { center, zoom } = fitBounds({ nw: bounds.nw, se: bounds.se }, mapSize);
+
+  return { center, zoom };
 };
 
 const fetchEntityCollection = (resource, query) => {
@@ -60,16 +64,13 @@ function* getRetailersSaga({ origin, maxDistance }) {
     if (response.data.length > 0) {
       const locations = response.data.map(retailer =>
         retailer.location.coordinates.slice().reverse()
-      ); // eslint-disable-line function-paren-newline
+      );
 
-      const calculatedCenter = calculateCenter(locations);
-
-      // TODO: how to calculate this? helper function in gmap lib
-      const zoom = locations.length === 1 ? 14 : 11;
+      const { center, zoom } = calcCenterAndZoom(locations);
 
       // yield put(updateZoom(zoom));
       // yield put(updateMapCenter(calculatedCenter));
-      yield put(updateCenterAndZoom(calculatedCenter, zoom));
+      yield put(updateCenterAndZoom(center, zoom));
       yield put(getRetailers.success(response.data));
     } else {
       console.log('no retailers found');

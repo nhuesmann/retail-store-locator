@@ -13,11 +13,13 @@ export {
   // UPDATE_MAP_CENTER,
   // UPDATE_ZOOM,
   UPDATE_CENTER_AND_ZOOM,
+  HANDLE_BOUNDS_CHANGE,
   MARKER_HOVERED,
   MARKER_HOVER_EXITED,
   // updateMapCenter,
   // updateZoom,
   updateCenterAndZoom,
+  handleBoundsChange,
   markerHovered,
   markerHoverExited,
 } from './map';

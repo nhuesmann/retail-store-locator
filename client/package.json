@@ -10,7 +10,6 @@
   "license": "MIT",
   "dependencies": {
     "@turf/bbox": "^6.0.0",
-    "@turf/center": "^6.0.0",
     "@turf/helpers": "^6.0.1",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",

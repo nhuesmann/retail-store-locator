@@ -1,9 +1,17 @@
+/* eslint object-curly-newline: 0 */
+
 import * as ActionTypes from '../actions';
 
 const initialState = {
   center: {
     lat: 33.913609,
     lng: -118.384909,
+  },
+  bounds: {
+    ne: { lat: null, lng: null },
+    nw: { lat: null, lng: null },
+    se: { lat: null, lng: null },
+    sw: { lat: null, lng: null },
   },
   zoom: 11,
   hoveredMarker: null,
@@ -31,6 +39,12 @@ function updateCenterAndZoom(state, action) {
   };
 }
 
+function handleBoundsChange(state, action) {
+  const { center, zoom, bounds, marginBounds, size } = action;
+
+  return { ...state, center, zoom, bounds, marginBounds, size };
+}
+
 function markerHovered(state, action) {
   return {
     ...state,
@@ -55,6 +69,9 @@ const reducer = (state = initialState, action) => {
 
     case ActionTypes.UPDATE_CENTER_AND_ZOOM:
       return updateCenterAndZoom(state, action);
+
+    case ActionTypes.HANDLE_BOUNDS_CHANGE:
+      return handleBoundsChange(state, action);
 
     case ActionTypes.MARKER_HOVERED:
       return markerHovered(state, action);
