@@ -16,9 +16,8 @@ const RetailerResult = ({ retailer, selected }) => {
     <div className={classes.join(' ')}>
       <h2 className={styles.heading}>{retailer.name}</h2>
       <p>
-        {retailer.address1}
-        {retailer.address2 && ` ${retailer.address2}`}, {retailer.city}{' '}
-        {retailer.state} {retailer.zip.slice(0, 5)}
+        {retailer.address}, {retailer.city} {retailer.state}{' '}
+        {retailer.zip.slice(0, 5)}
       </p>
     </div>
   );

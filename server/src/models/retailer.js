@@ -10,8 +10,7 @@ const RetailerSchema = new Schema({
     coordinates: [Number], // lng, lat
   },
   name: { type: String, trim: true, set: capitalize },
-  address1: { type: String, trim: true, set: capitalize },
-  address2: { type: String, trim: true, set: capitalize },
+  address: { type: String, trim: true, set: capitalize },
   city: { type: String, trim: true, set: capitalize },
   state: { type: String, trim: true, uppercase: true },
   zip: { type: String, trim: true },

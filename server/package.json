@@ -9,6 +9,7 @@
   "author": "Nathan Huesmann",
   "license": "MIT",
   "dependencies": {
+    "@google/maps": "^0.4.5",
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "csv-parse": "^2.0.4",
