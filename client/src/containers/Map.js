@@ -78,8 +78,6 @@ MapContainer.propTypes = {
     lng: PropTypes.number,
   }),
   searchRadius: PropTypes.number,
-  // searchRadiusOptions: PropTypes.arrayOf(PropTypes.number),
-  // searchRadiusSelectedIndex: PropTypes.number,
   handleBoundsChange: PropTypes.func,
   updateMapFromRetailers: PropTypes.func,
   updateCenterAndZoom: PropTypes.func,
@@ -99,8 +97,6 @@ const mapStateToProps = state => ({
   searchOrigin: state.form.searchOrigin.coordinates,
   searchCompleted: state.form.searchCompleted,
   searchRadius: getSearchRadius(state),
-  // searchRadiusOptions: state.form.searchRadiusOptions,
-  // searchRadiusSelectedIndex: state.form.searchRadiusSelectedIndex,
 });
 
 const mapDispatchToProps = dispatch => ({
