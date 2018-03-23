@@ -7,6 +7,7 @@ import { lineString } from '@turf/helpers';
 import { fitBounds } from 'google-map-react/utils';
 
 import * as ActionTypes from '../actions';
+import { truncateCoordinates, truncateBounds } from '../utilities';
 
 const initialState = {
   zoom: null,
@@ -27,26 +28,28 @@ const initialState = {
   size: null,
 };
 
-function truncateCenter({ lat, lng }) {
-  return {
-    lat: +lat.toFixed(7),
-    lng: +lng.toFixed(7),
-  };
-}
-
 function handleBoundsChange(state, action) {
-  const { zoom, bounds, marginBounds, size } = action;
-  const center = truncateCenter(action.center);
+  const { zoom, size } = action;
+
+  const center = truncateCoordinates(action.center);
+  const bounds = truncateBounds(action.bounds);
+  const marginBounds = truncateBounds(action.marginBounds);
 
   return { ...state, center, zoom, bounds, marginBounds, size };
 }
 
 function updateCenterAndZoom(state, action) {
-  return { ...state, center: truncateCenter(action.center), zoom: action.zoom };
+  return {
+    ...state,
+    center: truncateCoordinates(action.center),
+    zoom: action.zoom,
+  };
 }
 
 function updateMapFromRetailers(state, action) {
   const { retailers, size, searchOrigin } = action;
+
+  if (retailers.length === 0) return { ...state, center: searchOrigin };
 
   const locations = retailers.map(retailer =>
     retailer.location.coordinates.slice().reverse()
@@ -65,7 +68,7 @@ function updateMapFromRetailers(state, action) {
   };
 
   const { center, zoom } = fitBounds({ nw: bounds.nw, se: bounds.se }, size);
-  const truncatedCenter = truncateCenter(center);
+  const truncatedCenter = truncateCoordinates(center);
 
   return { ...state, center: truncatedCenter, zoom };
 }

@@ -8,6 +8,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { getSearchRadius } from '../store/selectors';
+
 import MapComponent from '../components/Map/Map';
 
 import {
@@ -21,18 +23,17 @@ import {
 class MapContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.retailers !== this.props.retailers) {
-      if (nextProps.retailers.length === 0) {
-        // TODO: add function here that will take the map size, search origin,
-        // and search miles and calculate a bounding box X mile radius around origin,
-        // then set center and zoom based on those bounds (similar to updateMapFromRetailers)
-        this.props.updateCenterAndZoom(this.props.searchOrigin, 11);
-      } else {
-        this.props.updateMapFromRetailers(
-          nextProps.retailers,
-          this.props.size,
-          this.props.searchOrigin
-        );
-      }
+      // TODO: add function here that will take the map size, search origin,
+      // and search miles and calculate a bounding box X mile radius around origin,
+      // then set center and zoom based on those bounds (similar to updateMapFromRetailers)
+      // do this inside updateMapFromRetailers
+
+      this.props.updateMapFromRetailers(
+        nextProps.retailers,
+        this.props.size,
+        this.props.searchOrigin,
+        this.props.searchRadius
+      );
     }
   }
 
@@ -76,11 +77,13 @@ MapContainer.propTypes = {
     lat: PropTypes.number,
     lng: PropTypes.number,
   }),
+  searchRadius: PropTypes.number,
   handleBoundsChange: PropTypes.func,
   updateMapFromRetailers: PropTypes.func,
   updateCenterAndZoom: PropTypes.func,
   markerHovered: PropTypes.func,
   markerHoverExited: PropTypes.func,
+  searchCompleted: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
@@ -92,6 +95,8 @@ const mapStateToProps = state => ({
   size: state.map.size,
   hoveredMarker: state.map.hoveredMarker,
   searchOrigin: state.form.searchOrigin.coordinates,
+  searchCompleted: state.form.searchCompleted,
+  searchRadius: getSearchRadius(state),
 });
 
 const mapDispatchToProps = dispatch => ({

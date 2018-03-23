@@ -1,4 +1,5 @@
 import * as ActionTypes from '../actions';
+import { truncateCoordinates } from '../utilities';
 
 const initialState = {
   searchOrigin: {
@@ -11,7 +12,7 @@ const initialState = {
   },
   searchRadiusOptions: [5, 10, 25, 50],
   searchRadiusSelectedIndex: 3,
-  didSubmitSearch: false,
+  searchCompleted: false,
 };
 
 function updateOriginCoordinatesSuccess(state, action) {
@@ -19,7 +20,7 @@ function updateOriginCoordinatesSuccess(state, action) {
     ...state,
     searchOrigin: {
       ...state.searchOrigin,
-      coordinates: action.coordinates,
+      coordinates: truncateCoordinates(action.coordinates),
     },
   };
 }
@@ -56,10 +57,10 @@ function updateSearchRadius(state, action) {
   return { ...state, searchRadiusSelectedIndex: selectedIndex };
 }
 
-function formSearchSubmitted(state) {
+function searchCompleted(state) {
   return {
     ...state,
-    didSubmitSearch: true,
+    searchCompleted: true,
   };
 }
 
@@ -80,8 +81,8 @@ const reducer = (state = initialState, action) => {
     case ActionTypes.UPDATE_SEARCH_RADIUS:
       return updateSearchRadius(state, action);
 
-    case ActionTypes.FORM_SEARCH_SUBMITTED:
-      return formSearchSubmitted(state);
+    case ActionTypes.SEARCH_COMPLETED:
+      return searchCompleted(state);
 
     default:
       return state;
