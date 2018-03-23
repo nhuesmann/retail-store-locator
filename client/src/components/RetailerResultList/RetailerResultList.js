@@ -13,7 +13,7 @@ const RetailerResultList = props => (
   <div className={styles.container}>
     <ul>
       {props.retailers.length > 0 &&
-        props.searchWasSubmitted &&
+        props.searchCompleted &&
         props.retailers.map(retailer => (
           <li key={retailer._id}>
             <RetailerResult
@@ -23,7 +23,7 @@ const RetailerResultList = props => (
           </li>
         ))}
       {props.retailers.length === 0 &&
-        props.searchWasSubmitted && (
+        props.searchCompleted && (
           <li>
             <NoResults />
           </li>
@@ -35,7 +35,7 @@ const RetailerResultList = props => (
 RetailerResultList.propTypes = {
   retailers: PropTypes.array.isRequired,
   hoveredMarker: PropTypes.string,
-  searchWasSubmitted: PropTypes.bool.isRequired,
+  searchCompleted: PropTypes.bool.isRequired,
 };
 
 RetailerResultList.defaultProps = {

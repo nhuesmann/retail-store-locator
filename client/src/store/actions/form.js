@@ -13,7 +13,7 @@ export const UPDATE_ORIGIN_COORDINATES = createRequestTypes(
 export const UPDATE_ORIGIN_ADDRESS = 'UPDATE_ORIGIN_ADDRESS';
 export const UPDATE_ORIGIN_PLACE_ID = 'UPDATE_ORIGIN_PLACE_ID';
 export const UPDATE_SEARCH_RADIUS = 'UPDATE_SEARCH_RADIUS';
-export const FORM_SEARCH_SUBMITTED = 'FORM_SEARCH_SUBMITTED';
+export const SEARCH_COMPLETED = 'SEARCH_COMPLETED';
 
 export const updateOriginCoordinates = {
   request: (address, placeId) =>
@@ -38,4 +38,4 @@ export const updateSearchRadius = selectedValue =>
     selectedValue,
   });
 
-export const formSearchSubmitted = () => action(FORM_SEARCH_SUBMITTED);
+export const searchCompleted = () => action(SEARCH_COMPLETED);

@@ -8,6 +8,7 @@ import * as actions from '../actions';
 
 const {
   getRetailers,
+  searchCompleted,
   updateOriginAddress,
   updateOriginPlaceId,
   updateOriginCoordinates,
@@ -28,11 +29,9 @@ function* getRetailersSaga({ origin, maxDistance }) {
     if (response.data.length > 0) {
       yield put(getRetailers.success(response.data));
     } else {
-      // TODO: need to display in UI
-      console.log('no retailers found');
-
       yield put(getRetailers.success([]));
     }
+    yield put(searchCompleted());
   } catch (error) {
     yield put(getRetailers.failure(error));
   }

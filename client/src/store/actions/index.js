@@ -3,12 +3,12 @@ export {
   UPDATE_ORIGIN_ADDRESS,
   UPDATE_ORIGIN_PLACE_ID,
   UPDATE_ORIGIN_COORDINATES,
-  FORM_SEARCH_SUBMITTED,
+  SEARCH_COMPLETED,
   updateSearchRadius,
   updateOriginAddress,
   updateOriginPlaceId,
   updateOriginCoordinates,
-  formSearchSubmitted,
+  searchCompleted,
 } from './form';
 
 export {

@@ -1,18 +1,46 @@
 /* eslint no-underscore-dangle: "off" */
 /* eslint react/forbid-prop-types: "off" */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import RetailerResultList from '../components/RetailerResultList/RetailerResultList';
 
-const RetailerResultListContainer = props => <RetailerResultList {...props} />;
+class RetailerResultListContainer extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.searchOrigin !== nextProps.searchOrigin ||
+      this.props.searchRadiusIndex !== nextProps.searchRadiusIndex
+    ) {
+      this.clearResults = true;
+    } else {
+      this.clearResults = false;
+    }
+  }
+
+  render() {
+    return this.clearResults ? null : <RetailerResultList {...this.props} />;
+  }
+}
 
 RetailerResultListContainer.propTypes = {
   retailers: PropTypes.array.isRequired,
   hoveredMarker: PropTypes.string,
-  searchWasSubmitted: PropTypes.bool.isRequired,
+  searchCompleted: PropTypes.bool.isRequired,
+  // searchOrigin: PropTypes.shape({
+  //   lat: PropTypes.number,
+  //   lng: PropTypes.number,
+  // }).isRequired,
+  searchOrigin: PropTypes.shape({
+    address: PropTypes.string,
+    placeId: PropTypes.string,
+    coordinates: PropTypes.shape({
+      lat: PropTypes.number,
+      lng: PropTypes.number,
+    }),
+  }).isRequired,
+  searchRadiusIndex: PropTypes.number.isRequired,
 };
 
 RetailerResultListContainer.defaultProps = {
@@ -22,7 +50,10 @@ RetailerResultListContainer.defaultProps = {
 const mapStateToProps = state => ({
   retailers: state.retailers,
   hoveredMarker: state.map.hoveredMarker,
-  searchWasSubmitted: state.form.didSubmitSearch,
+  searchCompleted: state.form.searchCompleted,
+  // searchOrigin: state.form.searchOrigin.coordinates,
+  searchOrigin: state.form.searchOrigin,
+  searchRadiusIndex: state.form.searchRadiusSelectedIndex,
 });
 
 export default connect(mapStateToProps)(RetailerResultListContainer);

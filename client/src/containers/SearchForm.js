@@ -11,7 +11,6 @@ import {
   updateOriginCoordinates,
   updateOriginAddress,
   updateSearchRadius,
-  formSearchSubmitted,
   getRetailers,
 } from '../store/actions';
 
@@ -25,7 +24,6 @@ SearchFormContainer.propTypes = {
   updateOriginCoordinates: PropTypes.func.isRequired,
   updateOriginAddress: PropTypes.func.isRequired,
   updateSearchRadius: PropTypes.func.isRequired,
-  formSearchSubmitted: PropTypes.func.isRequired,
   getRetailers: PropTypes.func.isRequired,
 };
 
@@ -42,7 +40,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(updateOriginCoordinates.request(address, placeId)),
   updateOriginAddress: address => dispatch(updateOriginAddress(address)),
   updateSearchRadius: event => dispatch(updateSearchRadius(event.target.value)),
-  formSearchSubmitted: () => dispatch(formSearchSubmitted()),
   getRetailers: (origin, maxDistance) =>
     dispatch(getRetailers.request(origin, maxDistance)),
 });

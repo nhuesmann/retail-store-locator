@@ -23,7 +23,6 @@ const SearchForm = props => {
     const searchRadius =
       props.searchRadiusOptions[props.searchRadiusSelectedIndex];
 
-    props.formSearchSubmitted();
     props.getRetailers(props.coordinates, searchRadius);
   };
 
@@ -95,7 +94,6 @@ SearchForm.propTypes = {
   updateOriginCoordinates: PropTypes.func.isRequired,
   updateOriginAddress: PropTypes.func.isRequired,
   updateSearchRadius: PropTypes.func.isRequired,
-  formSearchSubmitted: PropTypes.func.isRequired,
   getRetailers: PropTypes.func.isRequired,
 };
 
