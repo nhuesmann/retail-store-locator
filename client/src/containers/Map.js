@@ -27,7 +27,11 @@ class MapContainer extends Component {
         // then set center and zoom based on those bounds (similar to updateMapFromRetailers)
         this.props.updateCenterAndZoom(this.props.searchOrigin, 11);
       } else {
-        this.props.updateMapFromRetailers(nextProps.retailers, this.props.size);
+        this.props.updateMapFromRetailers(
+          nextProps.retailers,
+          this.props.size,
+          this.props.searchOrigin
+        );
       }
     }
   }
@@ -93,8 +97,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   handleBoundsChange: ({ center, zoom, bounds, marginBounds, size }) =>
     dispatch(handleBoundsChange(center, zoom, bounds, marginBounds, size)),
-  updateMapFromRetailers: (retailers, size) =>
-    dispatch(updateMapFromRetailers(retailers, size)),
+  updateMapFromRetailers: (retailers, size, searchOrigin) =>
+    dispatch(updateMapFromRetailers(retailers, size, searchOrigin)),
   updateCenterAndZoom: (center, zoom) =>
     dispatch(updateCenterAndZoom(center, zoom)),
   markerHovered: markerId => dispatch(markerHovered(markerId)),

@@ -12,7 +12,7 @@ export const updateCenterAndZoom = (center, zoom) =>
   action(UPDATE_CENTER_AND_ZOOM, { center, zoom });
 export const handleBoundsChange = (center, zoom, bounds, marginBounds, size) =>
   action(HANDLE_BOUNDS_CHANGE, { center, zoom, bounds, marginBounds, size });
-export const updateMapFromRetailers = (retailers, size) =>
-  action(UPDATE_MAP_FROM_RETAILERS, { retailers, size });
+export const updateMapFromRetailers = (retailers, size, searchOrigin) =>
+  action(UPDATE_MAP_FROM_RETAILERS, { retailers, size, searchOrigin });
 export const markerHovered = markerId => action(MARKER_HOVERED, { markerId });
 export const markerHoverExited = () => action(MARKER_HOVER_EXITED);
