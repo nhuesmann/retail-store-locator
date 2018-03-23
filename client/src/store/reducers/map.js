@@ -46,22 +46,13 @@ function updateCenterAndZoom(state, action) {
 }
 
 function updateMapFromRetailers(state, action) {
-  const { retailers, size } = action;
+  const { retailers, size, searchOrigin } = action;
 
   const locations = retailers.map(retailer =>
     retailer.location.coordinates.slice().reverse()
   );
 
-  if (locations.length === 1) {
-    return {
-      ...state,
-      center: {
-        lat: +locations[0][0].toFixed(7),
-        lng: +locations[0][1].toFixed(7),
-      },
-      zoom: 14,
-    };
-  }
+  locations.push([searchOrigin.lat, searchOrigin.lng]);
 
   const line = lineString(locations);
   const boundingBox = bbox(line);
