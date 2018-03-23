@@ -20,10 +20,7 @@ const SearchForm = props => {
   const handleFormSubmit = event => {
     event.preventDefault();
 
-    const searchRadius =
-      props.searchRadiusOptions[props.searchRadiusSelectedIndex];
-
-    props.getRetailers(props.coordinates, searchRadius);
+    props.getRetailers(props.coordinates, props.searchRadius);
   };
 
   const formStyles = {
@@ -74,7 +71,7 @@ const SearchForm = props => {
         <div className={styles.distanceAndButton}>
           <SearchRadiusSelector
             options={props.searchRadiusOptions}
-            selectedIndex={props.searchRadiusSelectedIndex}
+            selected={props.searchRadius}
             onChange={props.updateSearchRadius}
           />
           <button type="submit" className={styles.button}>
@@ -89,8 +86,8 @@ const SearchForm = props => {
 SearchForm.propTypes = {
   address: PropTypes.string.isRequired,
   coordinates: PropTypes.object.isRequired,
+  searchRadius: PropTypes.number.isRequired,
   searchRadiusOptions: PropTypes.arrayOf(PropTypes.number).isRequired,
-  searchRadiusSelectedIndex: PropTypes.number.isRequired,
   updateOriginCoordinates: PropTypes.func.isRequired,
   updateOriginAddress: PropTypes.func.isRequired,
   updateSearchRadius: PropTypes.func.isRequired,

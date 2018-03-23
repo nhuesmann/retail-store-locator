@@ -1,12 +1,10 @@
-/* eslint import/prefer-default-export: 0 */
+export function truncateCoordinates({ lat, lng }) {
+  return { lat: +lat.toFixed(7), lng: +lng.toFixed(7) };
+}
 
-exports.truncateCoordinates = ({ lat, lng }) => ({
-  lat: +lat.toFixed(7),
-  lng: +lng.toFixed(7),
-});
-
-exports.truncateBounds = boundsObj =>
-  Object.keys(boundsObj).reduce((acc, key) => {
-    acc[key] = this.truncateCoordinates(boundsObj[key]);
+export function truncateBounds(boundsObj) {
+  return Object.keys(boundsObj).reduce((acc, key) => {
+    acc[key] = truncateCoordinates(boundsObj[key]);
     return acc;
   }, {});
+}

@@ -8,6 +8,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { getSearchRadius } from '../store/selectors';
+
 import MapComponent from '../components/Map/Map';
 
 import {
@@ -29,7 +31,8 @@ class MapContainer extends Component {
       this.props.updateMapFromRetailers(
         nextProps.retailers,
         this.props.size,
-        this.props.searchOrigin
+        this.props.searchOrigin,
+        this.props.searchRadius
       );
     }
   }
@@ -74,6 +77,9 @@ MapContainer.propTypes = {
     lat: PropTypes.number,
     lng: PropTypes.number,
   }),
+  searchRadius: PropTypes.number,
+  // searchRadiusOptions: PropTypes.arrayOf(PropTypes.number),
+  // searchRadiusSelectedIndex: PropTypes.number,
   handleBoundsChange: PropTypes.func,
   updateMapFromRetailers: PropTypes.func,
   updateCenterAndZoom: PropTypes.func,
@@ -92,6 +98,9 @@ const mapStateToProps = state => ({
   hoveredMarker: state.map.hoveredMarker,
   searchOrigin: state.form.searchOrigin.coordinates,
   searchCompleted: state.form.searchCompleted,
+  searchRadius: getSearchRadius(state),
+  // searchRadiusOptions: state.form.searchRadiusOptions,
+  // searchRadiusSelectedIndex: state.form.searchRadiusSelectedIndex,
 });
 
 const mapDispatchToProps = dispatch => ({
