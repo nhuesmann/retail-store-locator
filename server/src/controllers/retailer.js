@@ -1,25 +1,79 @@
 /* eslint no-unused-vars: 0 */
+/* eslint function-paren-newline: 0 */
+
 const axios = require('axios');
 
 const Retailer = require('../models/retailer');
 const { runGeoQuery } = require('../helpers/geolocation');
 const { parseCsv } = require('../helpers/csv');
-const { capitalize } = require('../helpers/utility');
+const { capitalize, truncateCoordinates } = require('../helpers/utility');
 
-const createRetailer = retailer =>
-  new Retailer({
+const googleMapsClient = require('@google/maps').createClient({
+  key: process.env.GOOGLE_API_KEY,
+  Promise: Promise, // eslint-disable-line object-shorthand
+  rate: {
+    limit: 50,
+    period: 1000,
+  },
+});
+
+// eslint-disable-next-line consistent-return
+async function geocodeAddress(retailer) {
+  const address = `${retailer.address}, ${retailer.city}, ${retailer.state} ${
+    retailer.zip
+  }`;
+
+  const googleResponse = await googleMapsClient
+    .geocode({ address })
+    .asPromise();
+
+  if (googleResponse.json.status !== 'OK') {
+    // TODO: handle error, return something!
+    console.log(googleResponse.json.status);
+    console.log(retailer);
+  } else {
+    const { lat, lng } = googleResponse.json.results[0].geometry.location;
+
+    return truncateCoordinates([lng, lat]);
+  }
+}
+
+async function createRetailer(retailer) {
+  const geocoded = await geocodeAddress(retailer);
+
+  return new Retailer({
     location: {
-      coordinates: retailer.location.coordinates, // lng, lat
+      coordinates: geocoded, // lng, lat
     },
-    name: retailer.name,
-    address1: retailer.address1,
-    address2: retailer.address2,
+    name: retailer.retailer,
+    address: retailer.address,
     city: retailer.city,
     state: retailer.state,
     zip: retailer.zip,
     launch_date: retailer.launch_date,
     recipes_offered: retailer.recipes_offered,
   }).save();
+}
+
+async function processRetailer(retailer) {
+  // check if retailer exists
+  const existingRetailer = await Retailer.findOne(
+    {
+      name: capitalize(retailer.retailer),
+      address: capitalize(retailer.address),
+    },
+    '_id'
+  );
+
+  // if retailer exists, do not process and exclude from response
+  if (existingRetailer) return null;
+
+  // process the retailer (geocode and save)
+  const newRetailer = await createRetailer(retailer);
+
+  // TODO: Need to look into error here
+  return newRetailer;
+}
 
 exports.ListRetailers = async function ListRetailers(req, res, next) {
   if (req.query && req.query.lat && req.query.lng) {
@@ -46,41 +100,10 @@ exports.SyncRetailers = async function SyncRetailers(req, res, next) {
   // get the retailers
   const retailers = parseCsv(csv);
 
-  // process each retailer
-  const updatedRetailers = retailers
-    .map(retailer => {
-      // check if exists in db
-      const found = Retailer.findOne(
-        {
-          name: capitalize(retailer.retailer),
-          address1: capitalize(retailer.address),
-        },
-        '_id'
-      );
+  // process them
+  const newRetailers = await Promise.all(
+    retailers.map(retailer => processRetailer(retailer))
+  );
 
-      if (found) return null;
-
-      // if new retailer, geocode address
-      return 'need to geocode the address';
-    })
-    .filter(retailer => retailer);
-
-  // process if they don't already exist
-
-  // run geolocation to get coordinates
-
-  // call createRetailer
-
-  res.json(retailers);
+  res.json(newRetailers);
 };
-
-// for each retailer result
-
-// 1. check if exists in db
-
-// if exists:
-// do nothing
-
-// if doesn't exist:
-// 1. geolocate address
-// 2. save
