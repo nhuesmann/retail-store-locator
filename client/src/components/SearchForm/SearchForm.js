@@ -39,8 +39,9 @@ const SearchForm = props => {
       fontFamily: 'Verlag-Light',
     },
     autocompleteContainer: {
-      position: 'relative',
-      top: '0',
+      position: 'absolute',
+      top: '38px',
+      boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
       backgroundColor: 'white',
       border: 'none',
       width: '100%',
