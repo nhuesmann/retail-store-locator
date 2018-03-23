@@ -5,13 +5,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import RetailerResult from '../RetailerResult/RetailerResult';
+import NoResults from '../NoResults/NoResults';
 
 import styles from './RetailerResultList.scss';
 
 const RetailerResultList = props => (
   <div className={styles.container}>
     <ul>
-      {props.retailers &&
+      {props.retailers.length > 0 &&
+        props.searchWasSubmitted &&
         props.retailers.map(retailer => (
           <li key={retailer._id}>
             <RetailerResult
@@ -20,6 +22,12 @@ const RetailerResultList = props => (
             />
           </li>
         ))}
+      {props.retailers.length === 0 &&
+        props.searchWasSubmitted && (
+          <li>
+            <NoResults />
+          </li>
+        )}
     </ul>
   </div>
 );
@@ -27,6 +35,7 @@ const RetailerResultList = props => (
 RetailerResultList.propTypes = {
   retailers: PropTypes.array.isRequired,
   hoveredMarker: PropTypes.string,
+  searchWasSubmitted: PropTypes.bool.isRequired,
 };
 
 RetailerResultList.defaultProps = {

@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'react-places-autocomplete';
 
-import MaxDistanceSelector from '../MaxDistanceSelector/MaxDistanceSelector';
+import SearchRadiusSelector from '../SearchRadiusSelector/SearchRadiusSelector';
 
 import styles from './SearchForm.scss';
 
@@ -20,7 +20,11 @@ const SearchForm = props => {
   const handleFormSubmit = event => {
     event.preventDefault();
 
-    props.getRetailers(props.coordinates, props.maxDistance);
+    const searchRadius =
+      props.searchRadiusOptions[props.searchRadiusSelectedIndex];
+
+    props.formSearchSubmitted();
+    props.getRetailers(props.coordinates, searchRadius);
   };
 
   const formStyles = {
@@ -69,10 +73,10 @@ const SearchForm = props => {
           highlightFirstSuggestion
         />
         <div className={styles.distanceAndButton}>
-          <MaxDistanceSelector
-            options={[5, 10, 25, 50]}
-            selected={props.maxDistance}
-            onChange={props.updateMaxDistance}
+          <SearchRadiusSelector
+            options={props.searchRadiusOptions}
+            selectedIndex={props.searchRadiusSelectedIndex}
+            onChange={props.updateSearchRadius}
           />
           <button type="submit" className={styles.button}>
             Search
@@ -86,10 +90,12 @@ const SearchForm = props => {
 SearchForm.propTypes = {
   address: PropTypes.string.isRequired,
   coordinates: PropTypes.object.isRequired,
-  maxDistance: PropTypes.number.isRequired,
+  searchRadiusOptions: PropTypes.arrayOf(PropTypes.number).isRequired,
+  searchRadiusSelectedIndex: PropTypes.number.isRequired,
   updateOriginCoordinates: PropTypes.func.isRequired,
   updateOriginAddress: PropTypes.func.isRequired,
-  updateMaxDistance: PropTypes.func.isRequired,
+  updateSearchRadius: PropTypes.func.isRequired,
+  formSearchSubmitted: PropTypes.func.isRequired,
   getRetailers: PropTypes.func.isRequired,
 };
 
