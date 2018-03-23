@@ -12,6 +12,7 @@ const RetailerResultListContainer = props => <RetailerResultList {...props} />;
 RetailerResultListContainer.propTypes = {
   retailers: PropTypes.array.isRequired,
   hoveredMarker: PropTypes.string,
+  searchWasSubmitted: PropTypes.bool.isRequired,
 };
 
 RetailerResultListContainer.defaultProps = {
@@ -21,6 +22,7 @@ RetailerResultListContainer.defaultProps = {
 const mapStateToProps = state => ({
   retailers: state.retailers,
   hoveredMarker: state.map.hoveredMarker,
+  searchWasSubmitted: state.form.didSubmitSearch,
 });
 
 export default connect(mapStateToProps)(RetailerResultListContainer);

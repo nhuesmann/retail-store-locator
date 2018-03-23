@@ -1,12 +1,14 @@
 export {
-  UPDATE_MAX_DISTANCE,
+  UPDATE_SEARCH_RADIUS,
   UPDATE_ORIGIN_ADDRESS,
   UPDATE_ORIGIN_PLACE_ID,
   UPDATE_ORIGIN_COORDINATES,
-  updateMaxDistance,
+  FORM_SEARCH_SUBMITTED,
+  updateSearchRadius,
   updateOriginAddress,
   updateOriginPlaceId,
   updateOriginCoordinates,
+  formSearchSubmitted,
 } from './form';
 
 export {

@@ -9,7 +9,9 @@ const initialState = {
       lng: null,
     },
   },
-  maxDistance: 50,
+  searchRadiusOptions: [5, 10, 25, 50],
+  searchRadiusSelectedIndex: 3,
+  didSubmitSearch: false,
 };
 
 function updateOriginCoordinatesSuccess(state, action) {
@@ -46,10 +48,18 @@ function updateOriginPlaceId(state, action) {
   };
 }
 
-function updateMaxDistance(state, action) {
+function updateSearchRadius(state, action) {
+  const selectedIndex = state.searchRadiusOptions.indexOf(
+    +action.selectedValue
+  );
+
+  return { ...state, searchRadiusSelectedIndex: selectedIndex };
+}
+
+function formSearchSubmitted(state) {
   return {
     ...state,
-    maxDistance: +action.maxDistance,
+    didSubmitSearch: true,
   };
 }
 
@@ -67,8 +77,11 @@ const reducer = (state = initialState, action) => {
     case ActionTypes.UPDATE_ORIGIN_PLACE_ID:
       return updateOriginPlaceId(state, action);
 
-    case ActionTypes.UPDATE_MAX_DISTANCE:
-      return updateMaxDistance(state, action);
+    case ActionTypes.UPDATE_SEARCH_RADIUS:
+      return updateSearchRadius(state, action);
+
+    case ActionTypes.FORM_SEARCH_SUBMITTED:
+      return formSearchSubmitted(state);
 
     default:
       return state;
