@@ -24,7 +24,7 @@ const initialState = {
     se: { lat: null, lng: null },
     sw: { lat: null, lng: null },
   },
-  hoveredMarker: null,
+  hoveredRetailerId: null,
   size: null,
 };
 
@@ -86,17 +86,17 @@ function updateMapFromRetailers(state, action) {
   return { ...state, center: truncatedCenter, zoom };
 }
 
-function markerHovered(state, action) {
+function retailerHovered(state, action) {
   return {
     ...state,
-    hoveredMarker: action.markerId,
+    hoveredRetailerId: action.retailerId,
   };
 }
 
-function markerHoverExited(state) {
+function retailerHoverExited(state) {
   return {
     ...state,
-    hoveredMarker: null,
+    hoveredRetailerId: null,
   };
 }
 
@@ -111,11 +111,11 @@ const reducer = (state = initialState, action) => {
     case ActionTypes.UPDATE_MAP_FROM_RETAILERS:
       return updateMapFromRetailers(state, action);
 
-    case ActionTypes.MARKER_HOVERED:
-      return markerHovered(state, action);
+    case ActionTypes.RETAILER_HOVERED:
+      return retailerHovered(state, action);
 
-    case ActionTypes.MARKER_HOVER_EXITED:
-      return markerHoverExited(state);
+    case ActionTypes.RETAILER_HOVER_EXITED:
+      return retailerHoverExited(state);
 
     default:
       return state;

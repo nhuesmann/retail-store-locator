@@ -31,7 +31,7 @@ const MapComponent = props => (
       center={props.center}
       defaultZoom={defaultZoom}
       defaultCenter={defaultCenter}
-      hoverDistance={24}
+      hoverDistance={16}
       distanceToMouse={distanceToMouse}
       margin={[30, 30, 30, 30]}
       onChange={props.onBoundsChange}
@@ -44,6 +44,7 @@ const MapComponent = props => (
             lat={retailer.location.coordinates[1]}
             onMouseEnter={() => props.onMarkerHover(retailer._id)}
             onMouseLeave={props.onMarkerHoverExit}
+            retailerHovered={retailer._id === props.hoveredRetailerId}
           />
         ))}
     </GoogleMap>
@@ -60,6 +61,7 @@ MapComponent.propTypes = {
   onBoundsChange: PropTypes.func,
   onMarkerHover: PropTypes.func,
   onMarkerHoverExit: PropTypes.func,
+  hoveredRetailerId: PropTypes.string,
 };
 
 export default MapComponent;

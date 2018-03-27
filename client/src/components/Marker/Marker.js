@@ -8,7 +8,7 @@ import styles from './Marker.scss';
 const Marker = props => {
   const classes = [styles.marker];
 
-  if (props.$hover) classes.push(styles.markerHovered);
+  if (props.$hover || props.retailerHovered) classes.push(styles.markerHovered);
 
   return (
     <div
@@ -25,6 +25,7 @@ Marker.propTypes = {
   onMouseEnter: PropTypes.func.isRequired,
   onMouseLeave: PropTypes.func.isRequired,
   $hover: PropTypes.bool,
+  retailerHovered: PropTypes.bool.isRequired,
 };
 
 Marker.defaultProps = {

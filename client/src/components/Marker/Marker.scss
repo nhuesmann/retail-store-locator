@@ -7,7 +7,7 @@
   left: calc(-#{$markerWidth} / 2);
   top: calc(-#{$markerHeight});
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.1s ease;
 
   &Hovered {
     width: calc(#{$markerWidth} * #{$hoverMultiplier});

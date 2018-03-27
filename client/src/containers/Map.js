@@ -16,8 +16,8 @@ import {
   handleBoundsChange,
   updateMapFromRetailers,
   updateCenterAndZoom,
-  markerHovered,
-  markerHoverExited,
+  retailerHovered,
+  retailerHoverExited,
 } from '../store/actions';
 
 class MapContainer extends Component {
@@ -38,10 +38,10 @@ class MapContainer extends Component {
         zoom={this.props.zoom}
         center={this.props.center}
         markers={this.props.retailers}
-        hoveredMarker={this.props.hoveredMarker}
+        hoveredRetailerId={this.props.hoveredRetailerId}
         onBoundsChange={this.props.handleBoundsChange}
-        onMarkerHover={this.props.markerHovered}
-        onMarkerHoverExit={this.props.markerHoverExited}
+        onMarkerHover={this.props.retailerHovered}
+        onMarkerHoverExit={this.props.retailerHoverExited}
       />
     );
   }
@@ -67,7 +67,7 @@ MapContainer.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
   }),
-  hoveredMarker: PropTypes.string,
+  hoveredRetailerId: PropTypes.string,
   searchOrigin: PropTypes.shape({
     lat: PropTypes.number,
     lng: PropTypes.number,
@@ -76,8 +76,8 @@ MapContainer.propTypes = {
   handleBoundsChange: PropTypes.func,
   updateMapFromRetailers: PropTypes.func,
   updateCenterAndZoom: PropTypes.func,
-  markerHovered: PropTypes.func,
-  markerHoverExited: PropTypes.func,
+  retailerHovered: PropTypes.func,
+  retailerHoverExited: PropTypes.func,
   searchCompleted: PropTypes.bool,
 };
 
@@ -88,7 +88,7 @@ const mapStateToProps = state => ({
   bounds: state.map.bounds,
   marginBounds: state.map.marginBounds,
   size: state.map.size,
-  hoveredMarker: state.map.hoveredMarker,
+  hoveredRetailerId: state.map.hoveredRetailerId,
   searchOrigin: state.form.searchOrigin.coordinates,
   searchCompleted: state.form.searchCompleted,
   searchRadius: getSearchRadius(state),
@@ -103,8 +103,8 @@ const mapDispatchToProps = dispatch => ({
     ),
   updateCenterAndZoom: (center, zoom) =>
     dispatch(updateCenterAndZoom(center, zoom)),
-  markerHovered: markerId => dispatch(markerHovered(markerId)),
-  markerHoverExited: () => dispatch(markerHoverExited()),
+  retailerHovered: retailerId => dispatch(retailerHovered(retailerId)),
+  retailerHoverExited: () => dispatch(retailerHoverExited()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);

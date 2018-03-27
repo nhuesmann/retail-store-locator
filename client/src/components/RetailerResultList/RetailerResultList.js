@@ -1,5 +1,6 @@
 /* eslint no-underscore-dangle: "off" */
 /* eslint react/forbid-prop-types: "off" */
+/* eslint react/no-unused-prop-types: "off" */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -18,7 +19,9 @@ const RetailerResultList = props => (
           <li key={retailer._id}>
             <RetailerResult
               retailer={retailer}
-              selected={retailer._id === props.hoveredMarker}
+              selected={retailer._id === props.hoveredRetailerId}
+              onMouseEnter={() => props.retailerHovered(retailer._id)}
+              onMouseLeave={props.retailerHoverExited}
             />
           </li>
         ))}
@@ -37,14 +40,16 @@ const RetailerResultList = props => (
 
 RetailerResultList.propTypes = {
   retailers: PropTypes.array.isRequired,
-  hoveredMarker: PropTypes.string,
+  hoveredRetailerId: PropTypes.string,
   searchCompleted: PropTypes.bool.isRequired,
   searchRadiusOptions: PropTypes.arrayOf(PropTypes.number).isRequired,
   searchRadiusIndex: PropTypes.number.isRequired,
+  retailerHovered: PropTypes.func.isRequired,
+  retailerHoverExited: PropTypes.func.isRequired,
 };
 
 RetailerResultList.defaultProps = {
-  hoveredMarker: null,
+  hoveredRetailerId: null,
 };
 
 export default RetailerResultList;

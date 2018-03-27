@@ -5,8 +5,8 @@ import { action } from './utility';
 export const UPDATE_CENTER_AND_ZOOM = 'UPDATE_CENTER_AND_ZOOM';
 export const HANDLE_BOUNDS_CHANGE = 'HANDLE_BOUNDS_CHANGE';
 export const UPDATE_MAP_FROM_RETAILERS = 'UPDATE_MAP_FROM_RETAILERS';
-export const MARKER_HOVERED = 'MARKER_HOVERED';
-export const MARKER_HOVER_EXITED = 'MARKER_HOVER_EXITED';
+export const RETAILER_HOVERED = 'RETAILER_HOVERED';
+export const RETAILER_HOVER_EXITED = 'RETAILER_HOVER_EXITED';
 
 export const updateCenterAndZoom = (center, zoom) =>
   action(UPDATE_CENTER_AND_ZOOM, { center, zoom });
@@ -27,6 +27,7 @@ export const updateMapFromRetailers = (
     searchRadius,
   });
 
-export const markerHovered = markerId => action(MARKER_HOVERED, { markerId });
+export const retailerHovered = retailerId =>
+  action(RETAILER_HOVERED, { retailerId });
 
-export const markerHoverExited = () => action(MARKER_HOVER_EXITED);
+export const retailerHoverExited = () => action(RETAILER_HOVER_EXITED);
