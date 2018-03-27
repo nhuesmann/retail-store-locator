@@ -44,8 +44,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(updateOriginCoordinates.request(address, placeId)),
   updateOriginAddress: address => dispatch(updateOriginAddress(address)),
   updateSearchRadius: event => dispatch(updateSearchRadius(event.target.value)),
-  getRetailers: (origin, maxDistance) =>
-    dispatch(getRetailers.request(origin, maxDistance)),
+  getRetailers: (origin, searchRadius) =>
+    dispatch(getRetailers.request(origin, searchRadius)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

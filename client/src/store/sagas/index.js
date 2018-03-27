@@ -19,10 +19,10 @@ const fetchEntityCollection = (resource, query) => {
   return axios.get(`${resource}${queryString}`);
 };
 
-function* getRetailersSaga({ origin, maxDistance }) {
+function* getRetailersSaga({ origin, searchRadius }) {
   try {
     const { lat, lng } = origin;
-    const query = `?lat=${lat}&lng=${lng}&maxMiles=${maxDistance}`;
+    const query = `?lat=${lat}&lng=${lng}&searchRadius=${searchRadius}`;
 
     const response = yield call(fetchEntityCollection, 'retailers', query);
 
