@@ -25,7 +25,10 @@ const RetailerResultList = props => (
       {props.retailers.length === 0 &&
         props.searchCompleted && (
           <li>
-            <NoResults />
+            <NoResults
+              searchRadiusOptions={props.searchRadiusOptions}
+              searchRadiusIndex={props.searchRadiusIndex}
+            />
           </li>
         )}
     </ul>
@@ -36,6 +39,8 @@ RetailerResultList.propTypes = {
   retailers: PropTypes.array.isRequired,
   hoveredMarker: PropTypes.string,
   searchCompleted: PropTypes.bool.isRequired,
+  searchRadiusOptions: PropTypes.arrayOf(PropTypes.number).isRequired,
+  searchRadiusIndex: PropTypes.number.isRequired,
 };
 
 RetailerResultList.defaultProps = {

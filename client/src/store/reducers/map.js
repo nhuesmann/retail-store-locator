@@ -47,9 +47,22 @@ function updateCenterAndZoom(state, action) {
 }
 
 function updateMapFromRetailers(state, action) {
-  const { retailers, size, searchOrigin } = action;
+  const { retailers, size, searchOrigin, searchRadius } = action;
 
-  if (retailers.length === 0) return { ...state, center: searchOrigin };
+  if (retailers.length === 0) {
+    const MAP_RADIUS_TO_ZOOM = {
+      5: 13,
+      10: 12,
+      25: 10,
+      50: 9,
+    };
+
+    return {
+      ...state,
+      center: searchOrigin,
+      zoom: MAP_RADIUS_TO_ZOOM[searchRadius],
+    };
+  }
 
   const locations = retailers.map(retailer =>
     retailer.location.coordinates.slice().reverse()
