@@ -102,8 +102,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   handleBoundsChange: ({ center, zoom, bounds, marginBounds, size }) =>
     dispatch(handleBoundsChange(center, zoom, bounds, marginBounds, size)),
-  updateMapFromRetailers: (retailers, size, searchOrigin) =>
-    dispatch(updateMapFromRetailers(retailers, size, searchOrigin)),
+  updateMapFromRetailers: (retailers, size, searchOrigin, searchRadius) =>
+    dispatch(
+      updateMapFromRetailers(retailers, size, searchOrigin, searchRadius)
+    ),
   updateCenterAndZoom: (center, zoom) =>
     dispatch(updateCenterAndZoom(center, zoom)),
   markerHovered: markerId => dispatch(markerHovered(markerId)),
