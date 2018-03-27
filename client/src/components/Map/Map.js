@@ -18,6 +18,11 @@ const defaultCenter = {
   lng: -118.384909,
 };
 
+const distanceToMouse = ({ x, y }, { x: mouseX, y: mouseY }) =>
+  Math.sqrt(
+    (x - mouseX) * (x - mouseX) + (y - mouseY - 24) * (y - mouseY - 24)
+  );
+
 const MapComponent = props => (
   <div className={styles.container}>
     <GoogleMap
@@ -26,7 +31,8 @@ const MapComponent = props => (
       center={props.center}
       defaultZoom={defaultZoom}
       defaultCenter={defaultCenter}
-      hoverDistance={18}
+      hoverDistance={24}
+      distanceToMouse={distanceToMouse}
       margin={[30, 30, 30, 30]}
       onChange={props.onBoundsChange}
     >
