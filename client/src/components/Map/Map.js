@@ -18,6 +18,11 @@ const defaultCenter = {
   lng: -118.384909,
 };
 
+const distanceToMouse = ({ x, y }, { x: mouseX, y: mouseY }) =>
+  Math.sqrt(
+    (x - mouseX) * (x - mouseX) + (y - mouseY - 24) * (y - mouseY - 24)
+  );
+
 const MapComponent = props => (
   <div className={styles.container}>
     <GoogleMap
@@ -26,9 +31,12 @@ const MapComponent = props => (
       center={props.center}
       defaultZoom={defaultZoom}
       defaultCenter={defaultCenter}
-      hoverDistance={18}
+      hoverDistance={16}
+      distanceToMouse={distanceToMouse}
       margin={[30, 30, 30, 30]}
       onChange={props.onBoundsChange}
+      onZoomAnimationStart={props.zoomAnimationStarted}
+      onZoomAnimationEnd={props.zoomAnimationEnded}
     >
       {props.markers.length > 0 &&
         props.markers.map(retailer => (
@@ -38,6 +46,8 @@ const MapComponent = props => (
             lat={retailer.location.coordinates[1]}
             onMouseEnter={() => props.onMarkerHover(retailer._id)}
             onMouseLeave={props.onMarkerHoverExit}
+            retailerHovered={retailer._id === props.hoveredRetailerId}
+            show={props.showMarkers}
           />
         ))}
     </GoogleMap>
@@ -54,6 +64,10 @@ MapComponent.propTypes = {
   onBoundsChange: PropTypes.func,
   onMarkerHover: PropTypes.func,
   onMarkerHoverExit: PropTypes.func,
+  hoveredRetailerId: PropTypes.string,
+  zoomAnimationStarted: PropTypes.func,
+  zoomAnimationEnded: PropTypes.func,
+  showMarkers: PropTypes.bool,
 };
 
 export default MapComponent;

@@ -15,13 +15,17 @@ export {
   UPDATE_CENTER_AND_ZOOM,
   HANDLE_BOUNDS_CHANGE,
   UPDATE_MAP_FROM_RETAILERS,
-  MARKER_HOVERED,
-  MARKER_HOVER_EXITED,
+  RETAILER_HOVERED,
+  RETAILER_HOVER_EXITED,
+  ZOOM_ANIMATION_STARTED,
+  ZOOM_ANIMATION_ENDED,
   updateCenterAndZoom,
   handleBoundsChange,
   updateMapFromRetailers,
-  markerHovered,
-  markerHoverExited,
+  retailerHovered,
+  retailerHoverExited,
+  zoomAnimationStarted,
+  zoomAnimationEnded,
 } from './map';
 
 export { GET_RETAILERS, getRetailers } from './retailers';

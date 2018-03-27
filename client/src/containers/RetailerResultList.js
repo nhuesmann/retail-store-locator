@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 
 import RetailerResultList from '../components/RetailerResultList/RetailerResultList';
 
+import { retailerHovered, retailerHoverExited } from '../store/actions';
+
 class RetailerResultListContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (
@@ -26,7 +28,7 @@ class RetailerResultListContainer extends Component {
 
 RetailerResultListContainer.propTypes = {
   retailers: PropTypes.array.isRequired,
-  hoveredMarker: PropTypes.string,
+  hoveredRetailerId: PropTypes.string,
   searchCompleted: PropTypes.bool.isRequired,
   searchOrigin: PropTypes.shape({
     address: PropTypes.string,
@@ -38,19 +40,28 @@ RetailerResultListContainer.propTypes = {
   }).isRequired,
   searchRadiusOptions: PropTypes.arrayOf(PropTypes.number).isRequired,
   searchRadiusIndex: PropTypes.number.isRequired,
+  retailerHovered: PropTypes.func.isRequired,
+  retailerHoverExited: PropTypes.func.isRequired,
 };
 
 RetailerResultListContainer.defaultProps = {
-  hoveredMarker: null,
+  hoveredRetailerId: null,
 };
 
 const mapStateToProps = state => ({
   retailers: state.retailers,
-  hoveredMarker: state.map.hoveredMarker,
+  hoveredRetailerId: state.map.hoveredRetailerId,
   searchCompleted: state.form.searchCompleted,
   searchOrigin: state.form.searchOrigin,
   searchRadiusOptions: state.form.searchRadiusOptions,
   searchRadiusIndex: state.form.searchRadiusSelectedIndex,
 });
 
-export default connect(mapStateToProps)(RetailerResultListContainer);
+const mapDispatchToProps = dispatch => ({
+  retailerHovered: retailerId => dispatch(retailerHovered(retailerId)),
+  retailerHoverExited: () => dispatch(retailerHoverExited()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  RetailerResultListContainer
+);

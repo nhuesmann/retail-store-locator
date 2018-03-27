@@ -35,8 +35,9 @@ const SearchForm = props => {
       width: '100%',
       padding: '10px 10px 7px 10px',
       outline: 'none',
-      fontSize: '14px',
+      fontSize: '16px',
       fontFamily: 'Verlag-Light',
+      height: '50px',
     },
     autocompleteContainer: {
       position: 'absolute',
@@ -74,9 +75,11 @@ const SearchForm = props => {
             selected={props.searchRadius}
             onChange={props.updateSearchRadius}
           />
-          <button type="submit" className={styles.button}>
-            Search
-          </button>
+          <div className={styles.buttonContainer}>
+            <button type="submit" className={styles.button}>
+              Search
+            </button>
+          </div>
         </div>
       </form>
     </div>

@@ -14,10 +14,24 @@
   flex: 1;
 }
 
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.55rem 0.8rem 0 0.8rem;
+}
+
 .button {
   font-family: 'Verlag-Book';
   font-size: 1.3rem;
-  color: $charcoal;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
+  color: white;
+  background-color: $chefdOrange;
+  border: none;
+  border-radius: 0.4rem;
+  width: 7.6rem;
+  height: 2.5rem;
+  padding-top: 0.3rem;
   cursor: pointer;
 }

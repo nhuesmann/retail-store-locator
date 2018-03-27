@@ -1,15 +1,18 @@
 @import '../../scss/abstracts/_variables.scss';
 
-.container {
-  position: absolute;
-  width: 24px;
-  height: 32px;
-  left: -14px;
-  top: -20px;
-  color: $chefdOrange;
-  cursor: pointer;
-}
-
 .marker {
-  font-size: 3rem;
+  position: absolute;
+  width: $markerWidth;
+  height: $markerHeight;
+  left: calc(-#{$markerWidth} / 2);
+  top: calc(-#{$markerHeight});
+  cursor: pointer;
+  transition: all 0.1s ease;
+
+  &Hovered {
+    width: calc(#{$markerWidth} * #{$hoverMultiplier});
+    height: calc(#{$markerHeight} * #{$hoverMultiplier});
+    left: calc(-#{$markerWidth} * #{$hoverMultiplier} / 2);
+    top: calc(-#{$markerHeight} * #{$hoverMultiplier});
+  }
 }
