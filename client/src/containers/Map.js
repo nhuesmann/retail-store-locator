@@ -18,6 +18,7 @@ import {
   updateCenterAndZoom,
   retailerHovered,
   retailerHoverExited,
+  retailerClicked,
   zoomAnimationStarted,
   zoomAnimationEnded,
 } from '../store/actions';
@@ -41,9 +42,11 @@ class MapContainer extends Component {
         center={this.props.center}
         markers={this.props.retailers}
         hoveredRetailerId={this.props.hoveredRetailerId}
+        clickedRetailerId={this.props.clickedRetailerId}
         onBoundsChange={this.props.handleBoundsChange}
         onMarkerHover={this.props.retailerHovered}
         onMarkerHoverExit={this.props.retailerHoverExited}
+        onMarkerClick={this.props.retailerClicked}
         zoomAnimationStarted={this.props.zoomAnimationStarted}
         zoomAnimationEnded={this.props.zoomAnimationEnded}
         showMarkers={this.props.showMarkers}
@@ -72,7 +75,6 @@ MapContainer.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
   }),
-  hoveredRetailerId: PropTypes.string,
   searchOrigin: PropTypes.shape({
     lat: PropTypes.number,
     lng: PropTypes.number,
@@ -81,8 +83,11 @@ MapContainer.propTypes = {
   handleBoundsChange: PropTypes.func,
   updateMapFromRetailers: PropTypes.func,
   updateCenterAndZoom: PropTypes.func,
+  hoveredRetailerId: PropTypes.string,
   retailerHovered: PropTypes.func,
   retailerHoverExited: PropTypes.func,
+  clickedRetailerId: PropTypes.string,
+  retailerClicked: PropTypes.func,
   searchCompleted: PropTypes.bool,
   zoomAnimationStarted: PropTypes.func,
   zoomAnimationEnded: PropTypes.func,
@@ -97,6 +102,7 @@ const mapStateToProps = state => ({
   marginBounds: state.map.marginBounds,
   size: state.map.size,
   hoveredRetailerId: state.map.hoveredRetailerId,
+  clickedRetailerId: state.map.clickedRetailerId,
   showMarkers: state.map.showMarkers,
   searchOrigin: state.form.searchOrigin.coordinates,
   searchCompleted: state.form.searchCompleted,
@@ -114,6 +120,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(updateCenterAndZoom(center, zoom)),
   retailerHovered: retailerId => dispatch(retailerHovered(retailerId)),
   retailerHoverExited: () => dispatch(retailerHoverExited()),
+  retailerClicked: retailerId => dispatch(retailerClicked(retailerId)),
   zoomAnimationStarted: () => dispatch(zoomAnimationStarted()),
   zoomAnimationEnded: () => dispatch(zoomAnimationEnded()),
 });

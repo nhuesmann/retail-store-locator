@@ -46,7 +46,9 @@ const MapComponent = props => (
             lat={retailer.location.coordinates[1]}
             onMouseEnter={() => props.onMarkerHover(retailer._id)}
             onMouseLeave={props.onMarkerHoverExit}
-            retailerHovered={retailer._id === props.hoveredRetailerId}
+            onClick={() => props.onMarkerClick(retailer._id)}
+            hovered={retailer._id === props.hoveredRetailerId}
+            clicked={retailer._id === props.clickedRetailerId}
             show={props.showMarkers}
           />
         ))}
@@ -62,9 +64,11 @@ MapComponent.propTypes = {
   zoom: PropTypes.number,
   markers: PropTypes.array,
   onBoundsChange: PropTypes.func,
+  hoveredRetailerId: PropTypes.string,
   onMarkerHover: PropTypes.func,
   onMarkerHoverExit: PropTypes.func,
-  hoveredRetailerId: PropTypes.string,
+  clickedRetailerId: PropTypes.string,
+  onMarkerClick: PropTypes.func,
   zoomAnimationStarted: PropTypes.func,
   zoomAnimationEnded: PropTypes.func,
   showMarkers: PropTypes.bool,

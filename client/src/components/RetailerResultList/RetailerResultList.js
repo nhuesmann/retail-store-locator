@@ -19,9 +19,11 @@ const RetailerResultList = props => (
           <li key={retailer._id}>
             <RetailerResult
               retailer={retailer}
-              selected={retailer._id === props.hoveredRetailerId}
+              hovered={retailer._id === props.hoveredRetailerId}
+              clicked={retailer._id === props.clickedRetailerId}
               onMouseEnter={() => props.retailerHovered(retailer._id)}
               onMouseLeave={props.retailerHoverExited}
+              onClick={() => props.retailerClicked(retailer._id)}
             />
           </li>
         ))}
@@ -41,15 +43,18 @@ const RetailerResultList = props => (
 RetailerResultList.propTypes = {
   retailers: PropTypes.array.isRequired,
   hoveredRetailerId: PropTypes.string,
+  clickedRetailerId: PropTypes.string,
   searchCompleted: PropTypes.bool.isRequired,
   searchRadiusOptions: PropTypes.arrayOf(PropTypes.number).isRequired,
   searchRadiusIndex: PropTypes.number.isRequired,
   retailerHovered: PropTypes.func.isRequired,
   retailerHoverExited: PropTypes.func.isRequired,
+  retailerClicked: PropTypes.func.isRequired,
 };
 
 RetailerResultList.defaultProps = {
   hoveredRetailerId: null,
+  clickedRetailerId: null,
 };
 
 export default RetailerResultList;

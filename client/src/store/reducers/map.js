@@ -24,9 +24,10 @@ const initialState = {
     se: { lat: null, lng: null },
     sw: { lat: null, lng: null },
   },
-  hoveredRetailerId: null,
   size: null,
   showMarkers: false,
+  hoveredRetailerId: null,
+  clickedRetailerId: null,
 };
 
 function handleBoundsChange(state, action) {
@@ -101,6 +102,13 @@ function retailerHoverExited(state) {
   };
 }
 
+function retailerClicked(state, action) {
+  return {
+    ...state,
+    clickedRetailerId: action.retailerId,
+  };
+}
+
 function zoomAnimationStarted(state) {
   return { ...state, showMarkers: false };
 }
@@ -125,6 +133,9 @@ const reducer = (state = initialState, action) => {
 
     case ActionTypes.RETAILER_HOVER_EXITED:
       return retailerHoverExited(state);
+
+    case ActionTypes.RETAILER_CLICKED:
+      return retailerClicked(state, action);
 
     case ActionTypes.ZOOM_ANIMATION_STARTED:
       return zoomAnimationStarted(state);
