@@ -28,10 +28,6 @@ RetailerResultListContainer.propTypes = {
   retailers: PropTypes.array.isRequired,
   hoveredMarker: PropTypes.string,
   searchCompleted: PropTypes.bool.isRequired,
-  // searchOrigin: PropTypes.shape({
-  //   lat: PropTypes.number,
-  //   lng: PropTypes.number,
-  // }).isRequired,
   searchOrigin: PropTypes.shape({
     address: PropTypes.string,
     placeId: PropTypes.string,
@@ -40,6 +36,7 @@ RetailerResultListContainer.propTypes = {
       lng: PropTypes.number,
     }),
   }).isRequired,
+  searchRadiusOptions: PropTypes.arrayOf(PropTypes.number).isRequired,
   searchRadiusIndex: PropTypes.number.isRequired,
 };
 
@@ -51,8 +48,8 @@ const mapStateToProps = state => ({
   retailers: state.retailers,
   hoveredMarker: state.map.hoveredMarker,
   searchCompleted: state.form.searchCompleted,
-  // searchOrigin: state.form.searchOrigin.coordinates,
   searchOrigin: state.form.searchOrigin,
+  searchRadiusOptions: state.form.searchRadiusOptions,
   searchRadiusIndex: state.form.searchRadiusSelectedIndex,
 });
 
