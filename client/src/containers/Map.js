@@ -18,6 +18,8 @@ import {
   updateCenterAndZoom,
   retailerHovered,
   retailerHoverExited,
+  zoomAnimationStarted,
+  zoomAnimationEnded,
 } from '../store/actions';
 
 class MapContainer extends Component {
@@ -42,6 +44,9 @@ class MapContainer extends Component {
         onBoundsChange={this.props.handleBoundsChange}
         onMarkerHover={this.props.retailerHovered}
         onMarkerHoverExit={this.props.retailerHoverExited}
+        zoomAnimationStarted={this.props.zoomAnimationStarted}
+        zoomAnimationEnded={this.props.zoomAnimationEnded}
+        showMarkers={this.props.showMarkers}
       />
     );
   }
@@ -79,6 +84,9 @@ MapContainer.propTypes = {
   retailerHovered: PropTypes.func,
   retailerHoverExited: PropTypes.func,
   searchCompleted: PropTypes.bool,
+  zoomAnimationStarted: PropTypes.func,
+  zoomAnimationEnded: PropTypes.func,
+  showMarkers: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
@@ -89,6 +97,7 @@ const mapStateToProps = state => ({
   marginBounds: state.map.marginBounds,
   size: state.map.size,
   hoveredRetailerId: state.map.hoveredRetailerId,
+  showMarkers: state.map.showMarkers,
   searchOrigin: state.form.searchOrigin.coordinates,
   searchCompleted: state.form.searchCompleted,
   searchRadius: getSearchRadius(state),
@@ -105,6 +114,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(updateCenterAndZoom(center, zoom)),
   retailerHovered: retailerId => dispatch(retailerHovered(retailerId)),
   retailerHoverExited: () => dispatch(retailerHoverExited()),
+  zoomAnimationStarted: () => dispatch(zoomAnimationStarted()),
+  zoomAnimationEnded: () => dispatch(zoomAnimationEnded()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);

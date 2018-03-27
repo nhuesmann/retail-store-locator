@@ -26,6 +26,7 @@ const initialState = {
   },
   hoveredRetailerId: null,
   size: null,
+  showMarkers: false,
 };
 
 function handleBoundsChange(state, action) {
@@ -100,6 +101,14 @@ function retailerHoverExited(state) {
   };
 }
 
+function zoomAnimationStarted(state) {
+  return { ...state, showMarkers: false };
+}
+
+function zoomAnimationEnded(state) {
+  return { ...state, showMarkers: true };
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.HANDLE_BOUNDS_CHANGE:
@@ -116,6 +125,12 @@ const reducer = (state = initialState, action) => {
 
     case ActionTypes.RETAILER_HOVER_EXITED:
       return retailerHoverExited(state);
+
+    case ActionTypes.ZOOM_ANIMATION_STARTED:
+      return zoomAnimationStarted(state);
+
+    case ActionTypes.ZOOM_ANIMATION_ENDED:
+      return zoomAnimationEnded(state);
 
     default:
       return state;

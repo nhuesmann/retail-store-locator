@@ -11,13 +11,15 @@ const Marker = props => {
   if (props.$hover || props.retailerHovered) classes.push(styles.markerHovered);
 
   return (
-    <div
-      className={classes.join(' ')}
-      onMouseEnter={props.onMouseEnter}
-      onMouseLeave={props.onMouseLeave}
-    >
-      <img width="100%" height="100%" src={icon} alt="map marker" />
-    </div>
+    props.show && (
+      <div
+        className={classes.join(' ')}
+        onMouseEnter={props.onMouseEnter}
+        onMouseLeave={props.onMouseLeave}
+      >
+        <img width="100%" height="100%" src={icon} alt="map marker" />
+      </div>
+    )
   );
 };
 
@@ -26,6 +28,7 @@ Marker.propTypes = {
   onMouseLeave: PropTypes.func.isRequired,
   $hover: PropTypes.bool,
   retailerHovered: PropTypes.bool.isRequired,
+  show: PropTypes.bool.isRequired,
 };
 
 Marker.defaultProps = {
