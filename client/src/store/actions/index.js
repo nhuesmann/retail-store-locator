@@ -17,6 +17,8 @@ export {
   UPDATE_MAP_FROM_RETAILERS,
   RETAILER_HOVERED,
   RETAILER_HOVER_EXITED,
+  RETAILER_CLICKED,
+  MAP_CLICKED,
   ZOOM_ANIMATION_STARTED,
   ZOOM_ANIMATION_ENDED,
   updateCenterAndZoom,
@@ -24,6 +26,8 @@ export {
   updateMapFromRetailers,
   retailerHovered,
   retailerHoverExited,
+  retailerClicked,
+  mapClicked,
   zoomAnimationStarted,
   zoomAnimationEnded,
 } from './map';

@@ -7,7 +7,11 @@ import PropTypes from 'prop-types';
 
 import RetailerResultList from '../components/RetailerResultList/RetailerResultList';
 
-import { retailerHovered, retailerHoverExited } from '../store/actions';
+import {
+  retailerHovered,
+  retailerHoverExited,
+  retailerClicked,
+} from '../store/actions';
 
 class RetailerResultListContainer extends Component {
   componentWillReceiveProps(nextProps) {
@@ -29,6 +33,7 @@ class RetailerResultListContainer extends Component {
 RetailerResultListContainer.propTypes = {
   retailers: PropTypes.array.isRequired,
   hoveredRetailerId: PropTypes.string,
+  clickedRetailerId: PropTypes.string,
   searchCompleted: PropTypes.bool.isRequired,
   searchOrigin: PropTypes.shape({
     address: PropTypes.string,
@@ -42,15 +47,18 @@ RetailerResultListContainer.propTypes = {
   searchRadiusIndex: PropTypes.number.isRequired,
   retailerHovered: PropTypes.func.isRequired,
   retailerHoverExited: PropTypes.func.isRequired,
+  retailerClicked: PropTypes.func.isRequired,
 };
 
 RetailerResultListContainer.defaultProps = {
   hoveredRetailerId: null,
+  clickedRetailerId: null,
 };
 
 const mapStateToProps = state => ({
   retailers: state.retailers,
   hoveredRetailerId: state.map.hoveredRetailerId,
+  clickedRetailerId: state.map.clickedRetailerId,
   searchCompleted: state.form.searchCompleted,
   searchOrigin: state.form.searchOrigin,
   searchRadiusOptions: state.form.searchRadiusOptions,
@@ -60,6 +68,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   retailerHovered: retailerId => dispatch(retailerHovered(retailerId)),
   retailerHoverExited: () => dispatch(retailerHoverExited()),
+  retailerClicked: retailerId => dispatch(retailerClicked(retailerId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
