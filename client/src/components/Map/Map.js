@@ -35,6 +35,7 @@ const MapComponent = props => (
       distanceToMouse={distanceToMouse}
       margin={[30, 30, 30, 30]}
       onChange={props.onBoundsChange}
+      onClick={props.onMapClick}
       onZoomAnimationStart={props.zoomAnimationStarted}
       onZoomAnimationEnd={props.zoomAnimationEnded}
     >
@@ -65,10 +66,11 @@ MapComponent.propTypes = {
   markers: PropTypes.array,
   onBoundsChange: PropTypes.func,
   hoveredRetailerId: PropTypes.string,
+  clickedRetailerId: PropTypes.string,
   onMarkerHover: PropTypes.func,
   onMarkerHoverExit: PropTypes.func,
-  clickedRetailerId: PropTypes.string,
   onMarkerClick: PropTypes.func,
+  onMapClick: PropTypes.func,
   zoomAnimationStarted: PropTypes.func,
   zoomAnimationEnded: PropTypes.func,
   showMarkers: PropTypes.bool,

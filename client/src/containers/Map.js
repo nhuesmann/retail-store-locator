@@ -19,6 +19,7 @@ import {
   retailerHovered,
   retailerHoverExited,
   retailerClicked,
+  mapClicked,
   zoomAnimationStarted,
   zoomAnimationEnded,
 } from '../store/actions';
@@ -29,11 +30,26 @@ class MapContainer extends Component {
       this.props.updateMapFromRetailers(
         nextProps.retailers,
         this.props.size,
-        this.props.searchOrigin,
+        this.props.searchOrigin.coordinates,
         this.props.searchRadius
       );
     }
+
+    if (
+      this.props.searchOrigin !== nextProps.searchOrigin ||
+      this.props.searchRadiusIndex !== nextProps.searchRadiusIndex
+    ) {
+      this.clearResults = true;
+      this.props.retailerClicked(null);
+    } else {
+      this.clearResults = false;
+    }
   }
+
+  checkIfMarkersEnabled = (fn, id) => {
+    if (this.clearResults) return {};
+    return id ? fn(id) : fn();
+  };
 
   render() {
     return (
@@ -44,9 +60,16 @@ class MapContainer extends Component {
         hoveredRetailerId={this.props.hoveredRetailerId}
         clickedRetailerId={this.props.clickedRetailerId}
         onBoundsChange={this.props.handleBoundsChange}
-        onMarkerHover={this.props.retailerHovered}
-        onMarkerHoverExit={this.props.retailerHoverExited}
-        onMarkerClick={this.props.retailerClicked}
+        onMarkerHover={id =>
+          this.checkIfMarkersEnabled(this.props.retailerHovered, id)
+        }
+        onMarkerHoverExit={() =>
+          this.checkIfMarkersEnabled(this.props.retailerHoverExited)
+        }
+        onMarkerClick={id =>
+          this.checkIfMarkersEnabled(this.props.retailerClicked, id)
+        }
+        onMapClick={() => this.checkIfMarkersEnabled(this.props.mapClicked)}
         zoomAnimationStarted={this.props.zoomAnimationStarted}
         zoomAnimationEnded={this.props.zoomAnimationEnded}
         showMarkers={this.props.showMarkers}
@@ -76,18 +99,24 @@ MapContainer.propTypes = {
     height: PropTypes.number,
   }),
   searchOrigin: PropTypes.shape({
-    lat: PropTypes.number,
-    lng: PropTypes.number,
-  }),
+    address: PropTypes.string,
+    placeId: PropTypes.string,
+    coordinates: PropTypes.shape({
+      lat: PropTypes.number,
+      lng: PropTypes.number,
+    }),
+  }).isRequired,
   searchRadius: PropTypes.number,
+  searchRadiusIndex: PropTypes.number.isRequired,
   handleBoundsChange: PropTypes.func,
   updateMapFromRetailers: PropTypes.func,
   updateCenterAndZoom: PropTypes.func,
   hoveredRetailerId: PropTypes.string,
+  clickedRetailerId: PropTypes.string,
   retailerHovered: PropTypes.func,
   retailerHoverExited: PropTypes.func,
-  clickedRetailerId: PropTypes.string,
   retailerClicked: PropTypes.func,
+  mapClicked: PropTypes.func,
   searchCompleted: PropTypes.bool,
   zoomAnimationStarted: PropTypes.func,
   zoomAnimationEnded: PropTypes.func,
@@ -104,9 +133,10 @@ const mapStateToProps = state => ({
   hoveredRetailerId: state.map.hoveredRetailerId,
   clickedRetailerId: state.map.clickedRetailerId,
   showMarkers: state.map.showMarkers,
-  searchOrigin: state.form.searchOrigin.coordinates,
   searchCompleted: state.form.searchCompleted,
+  searchOrigin: state.form.searchOrigin,
   searchRadius: getSearchRadius(state),
+  searchRadiusIndex: state.form.searchRadiusSelectedIndex,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -121,6 +151,7 @@ const mapDispatchToProps = dispatch => ({
   retailerHovered: retailerId => dispatch(retailerHovered(retailerId)),
   retailerHoverExited: () => dispatch(retailerHoverExited()),
   retailerClicked: retailerId => dispatch(retailerClicked(retailerId)),
+  mapClicked: () => dispatch(mapClicked()),
   zoomAnimationStarted: () => dispatch(zoomAnimationStarted()),
   zoomAnimationEnded: () => dispatch(zoomAnimationEnded()),
 });

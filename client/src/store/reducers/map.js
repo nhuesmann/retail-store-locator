@@ -109,6 +109,10 @@ function retailerClicked(state, action) {
   };
 }
 
+function mapClicked(state) {
+  return { ...state, clickedRetailerId: null };
+}
+
 function zoomAnimationStarted(state) {
   return { ...state, showMarkers: false };
 }
@@ -136,6 +140,9 @@ const reducer = (state = initialState, action) => {
 
     case ActionTypes.RETAILER_CLICKED:
       return retailerClicked(state, action);
+
+    case ActionTypes.MAP_CLICKED:
+      return mapClicked(state);
 
     case ActionTypes.ZOOM_ANIMATION_STARTED:
       return zoomAnimationStarted(state);
