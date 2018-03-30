@@ -1,7 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import styles from './NoResults.scss';
+const Container = styled.div`
+  width: 100%;
+  border-bottom: 1px solid rgb(218, 218, 218);
+  padding: 20px 15px;
+  text-align: left;
+  color: rgb(78, 78, 78);
+`;
+
+const Heading = styled.h2`
+  font-family: 'Verlag-Bold';
+`;
 
 const NoResults = props => {
   const options = props.searchRadiusOptions;
@@ -14,10 +25,10 @@ const NoResults = props => {
       : 'Coming soon to a retail store near you...';
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.heading}>{heading}</h2>
+    <Container>
+      <Heading>{heading}</Heading>
       <p>{message}</p>
-    </div>
+    </Container>
   );
 };
 

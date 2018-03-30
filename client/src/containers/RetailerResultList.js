@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import RetailerResultList from '../components/RetailerResultList/RetailerResultList';
+import RetailerResultList from '../components/RetailerResultList';
 
 import {
   retailerHovered,

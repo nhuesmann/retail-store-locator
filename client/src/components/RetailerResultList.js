@@ -4,14 +4,18 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import RetailerResult from '../RetailerResult/RetailerResult';
-import NoResults from '../NoResults/NoResults';
+import RetailerResult from './RetailerResult';
+import NoResults from './NoResults';
 
-import styles from './RetailerResultList.scss';
+const Container = styled.div`
+  margin-top: 20px;
+  padding-right: 7px;
+`;
 
 const RetailerResultList = props => (
-  <div className={styles.container}>
+  <Container>
     <ul>
       {props.retailers.length > 0 &&
         props.searchCompleted &&
@@ -37,7 +41,7 @@ const RetailerResultList = props => (
           </li>
         )}
     </ul>
-  </div>
+  </Container>
 );
 
 RetailerResultList.propTypes = {

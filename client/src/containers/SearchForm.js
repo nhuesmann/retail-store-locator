@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 import { getSearchRadius } from '../store/selectors';
 
-import SearchForm from '../components/SearchForm/SearchForm';
+import SearchForm from '../components/SearchForm';
 
 import {
   updateOriginCoordinates,

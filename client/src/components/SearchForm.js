@@ -4,10 +4,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'react-places-autocomplete';
+import styled from 'styled-components';
 
-import SearchRadiusSelector from '../SearchRadiusSelector/SearchRadiusSelector';
+import SearchRadiusSelector from './SearchRadiusSelector';
 
-import styles from './SearchForm.scss';
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const Form = styled.form`
+  width: 100%;
+  display: flex;
+`;
+
+const SearchContainer = styled.div`
+  flex: 1;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5.5px 8px 0 8px;
+`;
+
+const Button = styled.button`
+  font-family: 'Verlag-Book';
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: white;
+  background-color: rgb(253, 103, 33);
+  border: none;
+  border-radius: 4px;
+  width: 76px;
+  height: 25px;
+  padding-top: 3px;
+  cursor: pointer;
+`;
 
 const SearchForm = props => {
   const inputProps = {
@@ -61,28 +96,26 @@ const SearchForm = props => {
   };
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleFormSubmit} className={styles.form}>
+    <Container>
+      <Form onSubmit={handleFormSubmit}>
         <PlacesAutocomplete
           inputProps={inputProps}
           onSelect={props.updateOriginCoordinates}
           styles={formStyles}
           highlightFirstSuggestion
         />
-        <div className={styles.distanceAndButton}>
+        <SearchContainer>
           <SearchRadiusSelector
             options={props.searchRadiusOptions}
             selected={props.searchRadius}
             onChange={props.updateSearchRadius}
           />
-          <div className={styles.buttonContainer}>
-            <button type="submit" className={styles.button}>
-              Search
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
+          <ButtonContainer>
+            <Button type="submit">Search</Button>
+          </ButtonContainer>
+        </SearchContainer>
+      </Form>
+    </Container>
   );
 };
 

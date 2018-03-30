@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 import { getSearchRadius } from '../store/selectors';
 
-import MapComponent from '../components/Map/Map';
+import MapComponent from '../components/Map';
 
 import {
   handleBoundsChange,

@@ -7,10 +7,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import GoogleMap from 'google-map-react';
+import styled from 'styled-components';
 
-import Marker from '../Marker/Marker';
+import Marker from './Marker';
 
-import styles from './Map.scss';
+const Container = styled.div`
+  width: 100%;
+  height: 800px;
+`;
 
 const defaultZoom = 11;
 const defaultCenter = {
@@ -24,7 +28,7 @@ const distanceToMouse = ({ x, y }, { x: mouseX, y: mouseY }) =>
   );
 
 const MapComponent = props => (
-  <div className={styles.container}>
+  <Container>
     <GoogleMap
       bootstrapURLKeys={{ key: [process.env.REACT_APP_GOOGLE_API_KEY] }}
       zoom={props.zoom}
@@ -54,7 +58,7 @@ const MapComponent = props => (
           />
         ))}
     </GoogleMap>
-  </div>
+  </Container>
 );
 
 MapComponent.propTypes = {
